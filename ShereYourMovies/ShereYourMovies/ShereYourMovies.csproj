@@ -45,6 +45,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
@@ -295,6 +296,7 @@
     <Compile Include="Classes\Elokuvat.cs" />
     <Compile Include="Classes\Movie.cs" />
     <Compile Include="Classes\SearchResult.cs" />
+    <Compile Include="Classes\YourMovies.cs" />
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

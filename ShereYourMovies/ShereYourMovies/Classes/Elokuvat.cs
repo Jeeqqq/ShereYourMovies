@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using System.Net;
 using System.IO;
+using System.Data.Linq.Mapping;
+using System.Data.Linq;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace Elokuvatietue
 {
@@ -31,32 +33,41 @@ namespace Elokuvatietue
 
         }
     }
+    [Table(Name="Elokuva")]
     public class Elokuva
     {
         //Muuttujat
-      
+        [Column(IsPrimaryKey=true)]
+        public string ElokuvaID;
+        [Column]
         public string FilePath { get; set; }
-  
-       public string Pituus { get; set; }
-        
+        [Column]
+        public string Pituus { get; set; }
+        [Column]
         public string VideoEncoding { get; set; }
-       
+       [Column]
         public string SoundEncoding { get; set; }
-      
+      [Column]
         public string TiedostonKoko { get; set; }
-       
+       [Column]
         public string Resolution { get; set; }
-        
+        [Column]
         public string Fps { get; set; }
-        
+        [Column]
         public int Tahdet { get; set; }
-        
+        [Column]
          public string Nimi { get; set; }
-        
+        [Column]
          public bool Watched { get; set; }
         // databasesta saatu Objekti
-        
-         public Movie DbTiedot { get; set; }
+
+        private EntitySet<Movie> _DbTiedot;
+        [Association(Storage = "_DbTiedot", OtherKey = "ElokuvaID")]
+        public EntitySet<Movie> DbTiedot 
+        {
+            get { return this._DbTiedot; } 
+            set{this._DbTiedot.Assign(value);}
+        }
 
         public Elokuva()
          {
@@ -64,10 +75,10 @@ namespace Elokuvatietue
          }
         public Elokuva(string nimi, string ohjaaja, string genre, int tahdet) 
         {
-            DbTiedot = new Movie();
+            //DbTiedot = new Movie();
             Nimi = nimi;
-            DbTiedot.Director = ohjaaja;
-            DbTiedot.Genre = genre;
+           // DbTiedot.Director = ohjaaja;
+            //DbTiedot.Genre = genre;
             Tahdet = tahdet;
             movieDatabase();
             
@@ -131,20 +142,20 @@ namespace Elokuvatietue
                      Exception e=new Exception("Elokuvan tietoja ei löytynyt");
                      throw e;
                  }
-                 DbTiedot = leffa.leffa;
+                 DbTiedot.Add(leffa.leffa);
              }
              catch (Exception e)
              {
-                 DbTiedot = new Movie();
-                 DbTiedot.Actors = "Tietoja ei löytynyt";
-                 DbTiedot.Director = "Tietoja ei löytynyt";
-                 DbTiedot.Genre = "Tietoja ei löytynyt";
-                 DbTiedot.Title= "Tietoja ei löytynyt";
-                 DbTiedot.Plot= "Tietoja ei löytynyt";
-                 DbTiedot.ImdbID = "Tietoja ei löytynyt";
-                 DbTiedot.ImdbRating = "Tietoja ei löytynyt";
-                 DbTiedot.Rated = "Tietoja ei löytynyt";
-                 
+                 Movie movie = new Movie();
+                 movie.Actors = "Tietoja ei löytynyt";
+                 movie.Director = "Tietoja ei löytynyt";
+                 movie.Genre = "Tietoja ei löytynyt";
+                 movie.Title = "Tietoja ei löytynyt";
+                 movie.Plot = "Tietoja ei löytynyt";
+                 movie.ImdbID = "Tietoja ei löytynyt";
+                 movie.ImdbRating = "Tietoja ei löytynyt";
+                 movie.Rated = "Tietoja ei löytynyt";
+                 DbTiedot.Add(movie);
                 // return false;
              }
 

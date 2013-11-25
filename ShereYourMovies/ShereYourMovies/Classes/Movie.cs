@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,48 +9,59 @@ using System.Xml.Serialization;
 
 namespace Elokuvatietue
 {
-    [Serializable(), XmlRoot("root")]
+    
     public class Root
     {
         public Root()
         {
             leffa = new Movie();
         }
-        [XmlElement("movie")]
+        
         public Movie leffa { get; set; }
     }
-   [Serializable()]
+   [Table(Name="Movie")]
     public class Movie
     {
-         [XmlAttribute ("title")]
+       [Column(IsPrimaryKey = true)]
+       public int MovieID;
+       [Column]
+       public string ElokuvaID;
+       private EntityRef<Elokuva> _Elokuva;
+       [Association(Storage = "_Elokuva", ThisKey = "ElokuvaID")]
+       public Elokuva Elokuva
+       {
+           get { return this._Elokuva.Entity; }
+           set { this._Elokuva.Entity = value; }
+       }
+         [Column]
         public string Title{get;set;}
-         [XmlAttribute("year")]
+          [Column]
         public string Year{get;set;}
-         [XmlAttribute("rated")]
+         [Column]
         public string Rated{get;set;}
-         [XmlAttribute("released")]
+          [Column]
         public string Released{get;set;}
-         [XmlAttribute("runtime")]
+         [Column]
         public string Runtime{get;set;}
-         [XmlAttribute("genre")]
+          [Column]
         public string Genre{get;set;}
-         [XmlAttribute("director")]
+         [Column]
         public string Director{get;set;}
-         [XmlAttribute("Writer")]
+         [Column]
         public string Writer{get;set;}
-         [XmlAttribute("actors")]
+          [Column]
         public string Actors{get;set;}
-         [XmlAttribute("plot")]
+        [Column]
         public string Plot{get;set;}
-         [XmlAttribute("poster")]
+         [Column] 
         public string Poster{get;set;}
-         [XmlAttribute("imdbRating")]
+          [Column]
         public string ImdbRating{get;set;}
-         [XmlAttribute("imdbVotes")]
+         [Column]
         public string ImdbVotes{get;set;}
-         [XmlAttribute("imdbID")]
+          [Column]
         public string ImdbID{get;set;}
-         [XmlAttribute("type")]
+         [Column] 
         public string Type{get;set;}
          
         public Movie()
