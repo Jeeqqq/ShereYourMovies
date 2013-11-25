@@ -13,7 +13,7 @@ namespace Elokuvatietue
     public class Serialisointi
     {
         #region XmlTiedostoMetodit
-        public static void SerialisoiXml(string tiedosto, ElokuvaLista ic)
+        public static void SerialisoiXml(string tiedosto, RssLista ic)
         {
             XmlSerializer xs = new XmlSerializer(ic.GetType());
             TextWriter tw = new StreamWriter(tiedosto);
@@ -30,14 +30,14 @@ namespace Elokuvatietue
                 tw.Close();
             }
         }
-        public static void DeSerialisoiXml(string filePath, ref ElokuvaLista leffat)
+        public static void DeSerialisoiXml(string filePath, ref RssLista feed)
         {
-            XmlSerializer deserializer = new XmlSerializer(typeof(ElokuvaLista));
+            XmlSerializer deserializer = new XmlSerializer(typeof(RssLista));
             try
             {
 
                 FileStream xmlFile = new FileStream(filePath, FileMode.Open);
-                leffat = (ElokuvaLista)deserializer.Deserialize(xmlFile);
+                feed = (RssLista)deserializer.Deserialize(xmlFile);
                 xmlFile.Close();
             }
             catch (Exception ex)
