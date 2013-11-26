@@ -10,7 +10,7 @@ using System.Data.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Elokuvatietue
+namespace ShereYourMovies.Classes
 {
 
     public class ElokuvaLista
@@ -37,8 +37,8 @@ namespace Elokuvatietue
     public class Elokuva
     {
         //Muuttujat
-        [Column(IsPrimaryKey=true)]
-        public string ElokuvaID;
+        [Column(Storage = "ElokuvaID", Name = "ElokuvaID", DbType = "BigInt IDENTITY NOT NULL", IsPrimaryKey = true, IsDbGenerated = true, UpdateCheck = UpdateCheck.Never)]
+        private int ElokuvaID;
         [Column]
         public string FilePath { get; set; }
         [Column]
@@ -59,19 +59,31 @@ namespace Elokuvatietue
          public string Nimi { get; set; }
         [Column]
          public bool Watched { get; set; }
-        // databasesta saatu Objekti
+        // yhdistetään Elokuva taulu MOvie tauluun.
 
         private EntitySet<Movie> _DbTiedot;
         [Association(Storage = "_DbTiedot", OtherKey = "ElokuvaID")]
         public EntitySet<Movie> DbTiedot 
         {
-            get { return this._DbTiedot; } 
-            set{this._DbTiedot.Assign(value);}
+            get { return this._DbTiedot; }
+            set { this._DbTiedot.Assign(value); }
+        }
+
+        //yhdistetään User Taulu Elokuva Tauluun
+        [Column]
+        public int UserID;
+        private EntityRef<User> _User;
+        [Association(Storage = "_User", ThisKey = "UserID")]
+        public User User
+        {
+            get { return this._User.Entity; }
+            set { this._User.Entity = value; }
         }
 
         public Elokuva()
          {
-
+             this._DbTiedot = new EntitySet<Movie>();
+             this._User = default(EntityRef<User>);
          }
         public Elokuva(string nimi, string ohjaaja, string genre, int tahdet) 
         {
@@ -80,6 +92,8 @@ namespace Elokuvatietue
            // DbTiedot.Director = ohjaaja;
             //DbTiedot.Genre = genre;
             Tahdet = tahdet;
+            this._DbTiedot = new EntitySet<Movie>();
+            this._User = default(EntityRef<User>);
             movieDatabase();
             
         }

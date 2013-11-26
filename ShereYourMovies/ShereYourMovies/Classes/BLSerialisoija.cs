@@ -6,9 +6,9 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
-using Elokuvatietue;
 
-namespace Elokuvatietue
+
+namespace ShereYourMovies.Classes
 {
     public class Serialisointi
     {

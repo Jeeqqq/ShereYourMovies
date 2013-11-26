@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ShereYourMovies.Classes;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -12,13 +14,32 @@ namespace ShereYourMovies.Account
         protected void Page_Load(object sender, EventArgs e)
         {
             RegisterHyperLink.NavigateUrl = "Register";
-            OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"];
 
-            var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
-            if (!String.IsNullOrEmpty(returnUrl))
+        }
+
+        protected void Login_Authenticate(object sender, AuthenticateEventArgs e)
+        {
+            
+            YourMovies db =(YourMovies) Session["db"];
+
+            if (UserController.Authenticate(loginWindow.UserName.ToString(), loginWindow.Password.ToString(),ref db))
             {
-                RegisterHyperLink.NavigateUrl += "?ReturnUrl=" + returnUrl;
+                e.Authenticated = true;
+            }
+            else
+            {
+                e.Authenticated = false;
             }
         }
+        protected void Login_LoginError(object sender, EventArgs e)
+        {
+            Session["UserAuthentication"] = null;
+        }
+        protected void Login_LoggedIn(object sender, EventArgs e)
+        {
+            Session["UserAuthentication"] = loginWindow.UserName.ToString();
+            Response.Redirect("~");
+        }
+
     }
 }

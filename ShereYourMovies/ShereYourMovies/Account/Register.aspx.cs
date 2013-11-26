@@ -6,6 +6,7 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.AspNet.Membership.OpenAuth;
+using ShereYourMovies.Classes;
 
 namespace ShereYourMovies.Account
 {
@@ -26,6 +27,22 @@ namespace ShereYourMovies.Account
                 continueUrl = "~/";
             }
             Response.Redirect(continueUrl);
+        }
+
+        protected void RegisterUser_CreatingUser(object sender, LoginCancelEventArgs e)
+        {
+            YourMovies db = (YourMovies)Session["db"];
+
+            string msg = UserController.RegisterUser(RegisterUser.UserName, RegisterUser.Password, ref db);
+
+            if (msg == "")
+            {
+                Session["UserAuthentication"] = RegisterUser.UserName;
+            }
+            else
+            {
+                
+            }
         }
     }
 }

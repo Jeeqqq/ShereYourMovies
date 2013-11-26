@@ -5,14 +5,16 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
-namespace Elokuvatietue
+namespace ShereYourMovies.Classes
 {
+    
     public class YourMovies : DataContext
     {
           public Table<Elokuva> Elokuva;
-            public Table<Movie> Movie;
+          public Table<Movie> Movie;
+          public Table<User> User;
 
-            public YourMovies(string connection) : base(connection) { }
+          public YourMovies(SqlConnection connection) : base(connection) { }
         
     }
 }

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Elokuvatietue
+namespace ShereYourMovies.Classes
 {
     
     public class Root
@@ -22,10 +22,10 @@ namespace Elokuvatietue
    [Table(Name="Movie")]
     public class Movie
     {
-       [Column(IsPrimaryKey = true)]
-       public int MovieID;
+       [Column(Storage = "MovieID", Name = "MovieID", DbType = "BigInt IDENTITY NOT NULL", IsPrimaryKey = true, IsDbGenerated = true, UpdateCheck = UpdateCheck.Never)]
+       private int MovieID;
        [Column]
-       public string ElokuvaID;
+       public int ElokuvaID;
        private EntityRef<Elokuva> _Elokuva;
        [Association(Storage = "_Elokuva", ThisKey = "ElokuvaID")]
        public Elokuva Elokuva
@@ -66,7 +66,8 @@ namespace Elokuvatietue
          
         public Movie()
         {
-
+            
+            this._Elokuva = default(EntityRef<Elokuva>);
         }
     }
 }

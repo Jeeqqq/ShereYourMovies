@@ -1,12 +1,11 @@
 ﻿html {
-    background-color: #e2e2e2;
+    background: #4c4c4c; /* Old browsers */
+
     margin: 0;
     padding: 0;
 }
 
-body {
-    background-color: #fff;
-    border-top: solid 10px #000;
+body {   
     color: #333;
     font-size: .85em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
@@ -94,52 +93,64 @@ h5, h6 {
 ----------------------------------------------------------*/
 .content-wrapper {
     margin: 0 auto;
-    max-width: 960px;
+    
 }
 
 #body {
-    background-color: #efeeef;
+    
     clear: both;
     padding-bottom: 35px;
 }
+    .main-content { 
+        
+        border-top:double 5px;
+    background: #eeeeee; /* Old browsers */
+background: -moz-linear-gradient(top,  #eeeeee 0%, #cccccc 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #eeeeee 0%,#cccccc 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #eeeeee 0%,#cccccc 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #eeeeee 0%,#cccccc 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #eeeeee 0%,#cccccc 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
 
-    .main-content {
-        background: url("../Images/accent.png") no-repeat;
+
+
         padding-left: 10px;
         padding-top: 30px;
+        padding-bottom: 35px;
     }
 
     .featured + .main-content {
         background: url("../Images/heroAccent.png") no-repeat;
     }
 
+
 header .content-wrapper {
-    padding-top: 20px; 
+    background: url("../Images/banner.jpg") no-repeat center;
+    background-size:cover;
+    height:200px;
+   
+    margin:0 auto;
 }
-    
+#naviBar {
+float:right;
+margin-top:125px;
+padding:7px;
+}   
 footer {
-    clear: both;
-    background-color: #e2e2e2;
+    margin:0 auto;
+    width:830px;
     font-size: .8em;
     height: 100px;
 }
-
-
-/* site title
-----------------------------------------------------------*/
-.site-title {
-    color: #c8c8c8;
-    font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
-    font-size: 2.3em;
-    margin: 0;
+#footer
+{
+    color:#e2e2e2;
+    width:200px;
+    margin:0 auto;
 }
 
-.site-title a, .site-title a:hover, .site-title a:active {
-    background: none;
-    color: #c8c8c8;
-    outline: none;
-    text-decoration: none;
-}
+
 
 
 /* login
@@ -147,16 +158,16 @@ footer {
 #login {
     display: block;
     font-size: .85em;
-    margin: 0 0 10px;
+    margin: 0 0 5px;
     text-align: right;
 }
 
     #login a {
-        background-color: #d3dce0;
+        
         margin-left: 10px;
         margin-right: 3px;
-        padding: 2px 3px;
-        text-decoration: none;
+        padding: 2px 1px;
+        text-decoration: underline;
     }
 
     #login a.username {
@@ -328,9 +339,39 @@ aside {
 
 /* login page */
 #loginForm {
-    border-right: solid 2px #c8c8c8;
-    float: left;
-    width: 55%;
+    border-radius:3px;
+    padding:10px;
+    width:330px;
+    margin:0 auto;
+    /*border-right:5px solid red;*/
+    background: #ffffff; /* Old browsers */
+background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+
+
+   
+}
+#registerForm {
+    border-radius:3px;
+    padding:10px;
+   width:350px;
+   margin:0 auto;
+    background: #ffffff; /* Old browsers */
+background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+
+
+   
 }
 
     #loginForm .validation-error {
