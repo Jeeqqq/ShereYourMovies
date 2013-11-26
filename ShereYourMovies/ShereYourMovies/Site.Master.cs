@@ -96,7 +96,9 @@ namespace ShereYourMovies
 
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            //aja tämä vain kerran ja sitten kommentoi tämä rivi. tuon construoktori luo yhen leffan ja yhen käyttäjän
+            //username:Teppo ja pass: salasana
+            ElokuvaController eController = new ElokuvaController();
         }
         protected void logout(object sender, EventArgs e)
         {

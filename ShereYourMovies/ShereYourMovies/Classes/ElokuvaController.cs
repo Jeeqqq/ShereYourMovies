@@ -20,14 +20,19 @@ namespace ShereYourMovies.Classes
             myConnection.ConnectionString = @"Data Source=(LocalDb)\v11.0;Initial Catalog=shareyourmovies;Integrated Security=True";
 
             db = new YourMovies(myConnection);
-         /*   if (!db.DatabaseExists())
+            if (db.DatabaseExists())
             {
                 db.DeleteDatabase();
                 db.CreateDatabase();
-            }*/
+            }
 
+          string msg=  UserController.RegisterUser("Teppo", "salasana", ref db);
+          Elokuva leffa = new Elokuva();
+          leffa.Nimi = "Vepsän Leffa";
+          leffa.UserID = 1;
 
-
+          db.Elokuva.InsertOnSubmit(leffa);
+          db.SubmitChanges();
             
            
            
