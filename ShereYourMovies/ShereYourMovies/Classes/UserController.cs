@@ -76,10 +76,8 @@ namespace ShereYourMovies.Classes
                 }
                 catch (Exception e)
                 {
-                    msg=e.Message;
+                    msg = e.Message;
                 }
-
-               
             }
             return msg;
         }

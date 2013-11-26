@@ -59,7 +59,8 @@
                 <nav>
                     <ul id="menu">
                         <li><a runat="server" href="~/">Home</a></li>
-                        <li><a runat="server" href="~/About">Omat leffat</a></li>
+                        <li><a runat="server" href="~/About">About</a></li>
+                        <li><a runat="server" href="ListMovies.aspx">Omat leffat</a></li>
                        
                     </ul>
                 </nav>
