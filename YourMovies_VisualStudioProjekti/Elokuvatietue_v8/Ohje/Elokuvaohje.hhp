@@ -1,0 +1,12 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=Elokuvaohje.chm
+Contents file=C:\Users\Aleksi\Desktop\asd\Menu.hhc
+Default topic=default.html
+Display compile progress=No
+Index file=..\Ohje\RealWorld.hhk
+Language=0x40b Finnish (Finland)
+
+
+[INFOTYPES]
+

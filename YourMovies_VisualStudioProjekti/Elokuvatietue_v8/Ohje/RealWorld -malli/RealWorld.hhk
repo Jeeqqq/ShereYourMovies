@@ -1,0 +1,452 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+<param name="Font" value=",8,1">
+</OBJECT>
+<UL>
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="ActiveX" >
+<param name="Local" value="default.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Adding a customer" >
+<param name="Local" value="CustomerAdd.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Adding a new category" >
+<param name="Local" value="CategoryAdd.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Adding a new shipper" >
+<param name="Local" value="ShipperAdd.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Adding a product" >
+<param name="Local" value="ProductAdd.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Adding a supplier" >
+<param name="Local" value="SupplierAdd.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Adding an employee" >
+<param name="Local" value="EmployeeAdd.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Adding an order" >
+<param name="Local" value="OrderAdd.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Backwards" >
+<param name="Local" value="BrowserBack.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Booklet Cover Page" >
+<param name="Local" value="bookletcoverpage.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Browser" >
+<param name="Local" value="BrowserView.html" >
+</OBJECT> 
+<UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Moving backwards" >
+<param name="Local" value="BrowserBack.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Moving Forwards" >
+<param name="Local" value="BrowserForward.html" >
+</OBJECT> 
+</UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Category" >
+<param name="See Also" value="Category"></OBJECT> 
+<UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Adding" >
+<param name="Local" value="CategoryAdd.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Deleting" >
+<param name="Local" value="CategoryDelete.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Editing" >
+<param name="Local" value="CategoryEdit.html" >
+</OBJECT> 
+</UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Changing the line color" >
+<param name="Local" value="ScribbleLineColor.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Changing the line width" >
+<param name="Local" value="ScribbleLineWidth.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Color" >
+<param name="Local" value="ScribbleLineColor.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Command" >
+<param name="Local" value="CommandReference.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="CommandBar Reference" >
+<param name="Local" value="CommandReference.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Component" >
+<param name="Local" value="default.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Concept application" >
+<param name="Local" value="default.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Customer" >
+<param name="See Also" value="Customer"></OBJECT> 
+<UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Adding" >
+<param name="Local" value="CustomerAdd.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Deleting" >
+<param name="Local" value="CustomerDelete.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Editing" >
+<param name="Local" value="CustomerEdit.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Viewing" >
+<param name="Local" value="CustomersView.html" >
+</OBJECT> 
+</UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Customers View" >
+<param name="Local" value="CustomersView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Deleting a category" >
+<param name="Local" value="CategoryDelete.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Deleting a customer" >
+<param name="Local" value="CustomerDelete.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Deleting a product" >
+<param name="Local" value="ProductDelete.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Deleting a shipper" >
+<param name="Local" value="ShipperDelete.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Deleting a supplier" >
+<param name="Local" value="SupplierDelete.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Deleting an employee" >
+<param name="Local" value="EmployeeDelete.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Deleting an order" >
+<param name="Local" value="OrderDelete.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Displaying a list of open windows" >
+<param name="Local" value="OpenViews.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Editing a category" >
+<param name="Local" value="CategoryEdit.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Editing a customer" >
+<param name="Local" value="CustomerEdit.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Editing a product" >
+<param name="Local" value="ProductEdit.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Editing a shipper" >
+<param name="Local" value="ShipperEdit.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Editing a supplier" >
+<param name="Local" value="SupplierEdit.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Editing an employee" >
+<param name="Local" value="EmployeeEdit.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Editing an order" >
+<param name="Local" value="OrderEdit.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Employee" >
+<param name="See Also" value="Employee"></OBJECT> 
+<UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Adding" >
+<param name="Local" value="EmployeeAdd.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Deleting" >
+<param name="Local" value="EmployeeDelete.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Editing" >
+<param name="Local" value="EmployeeEdit.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Viewing" >
+<param name="Local" value="EmployeesView.html" >
+</OBJECT> 
+</UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Employees View" >
+<param name="Local" value="EmployeesView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Forwards" >
+<param name="Local" value="BrowserForward.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Hot Keys" >
+<param name="Local" value="ShortcutKeys.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="HotKeys Reference" >
+<param name="Local" value="ShortcutKeys.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Innovasys" >
+<param name="Local" value="default.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Keyboard" >
+<param name="Local" value="ShortcutKeys.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Line" >
+<param name="Local" value="ScribbleLineColor.html" >
+<param name="Local" value="ScribbleLineWidth.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="List" >
+<param name="Local" value="OpenViews.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Map" >
+<param name="Local" value="userinterface.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Moving back in the history list" >
+<param name="Local" value="BrowserBack.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Moving forward in the history list" >
+<param name="Local" value="BrowserForward.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Opening a view" >
+<param name="Local" value="OpenViews.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Opening Views" >
+<param name="Local" value="OpenViews.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Order" >
+<param name="See Also" value="Order"></OBJECT> 
+<UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Adding" >
+<param name="Local" value="OrderAdd.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Deleting" >
+<param name="Local" value="OrderDelete.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Editing" >
+<param name="Local" value="OrderEdit.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Viewing" >
+<param name="Local" value="OrdersView.html" >
+</OBJECT> 
+</UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Orders view" >
+<param name="Local" value="OrdersView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Overview" >
+<param name="Local" value="userinterface.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Page" >
+<param name="Local" value="BrowserView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Product" >
+<param name="See Also" value="Product"></OBJECT> 
+<UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Adding" >
+<param name="Local" value="ProductAdd.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Delete" >
+<param name="Local" value="ProductDelete.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Editing" >
+<param name="Local" value="ProductEdit.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="View" >
+<param name="Local" value="ProductsView.html" >
+</OBJECT> 
+</UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Products View" >
+<param name="Local" value="ProductsView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="RealWorld" >
+<param name="Local" value="default.html" >
+<param name="Local" value="OpenViews.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Reference" >
+<param name="Local" value="CommandReference.html" >
+<param name="Local" value="ShortcutKeys.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Scribble" >
+<param name="See Also" value="Scribble"></OBJECT> 
+<UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Line Color" >
+<param name="Local" value="ScribbleLineColor.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Width" >
+<param name="Local" value="ScribbleLineWidth.html" >
+</OBJECT> 
+</UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Shipper" >
+<param name="See Also" value="Shipper"></OBJECT> 
+<UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Adding" >
+<param name="Local" value="ShipperAdd.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Deleting" >
+<param name="Local" value="ShipperDelete.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Editing" >
+<param name="Local" value="ShipperEdit.html" >
+</OBJECT> 
+</UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Shortcut Keys" >
+<param name="Local" value="ShortcutKeys.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Supplier" >
+<param name="See Also" value="Supplier"></OBJECT> 
+<UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Adding" >
+<param name="Local" value="SupplierAdd.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Deleting" >
+<param name="Local" value="SupplierDelete.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Editing" >
+<param name="Local" value="SupplierEdit.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Viewing" >
+<param name="Local" value="SuppliersView.html" >
+</OBJECT> 
+</UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Suppliers View" >
+<param name="Local" value="SuppliersView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="The customers view" >
+<param name="Local" value="CustomersView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="The employees view" >
+<param name="Local" value="EmployeesView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="The orders view" >
+<param name="Local" value="OrdersView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="The products view" >
+<param name="Local" value="ProductsView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="The RealWorld User Interface" >
+<param name="Local" value="userinterface.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="The suppliers view" >
+<param name="Local" value="SuppliersView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="User Interface" >
+<param name="Local" value="userinterface.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="View" >
+<param name="Local" value="OpenViews.html" >
+</OBJECT> 
+<UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Customers" >
+<param name="Local" value="CustomersView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Employees" >
+<param name="Local" value="EmployeesView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Orders" >
+<param name="Local" value="OrdersView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Products" >
+<param name="Local" value="ProductsView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Suppliers" >
+<param name="Local" value="SuppliersView.html" >
+</OBJECT> 
+</UL><LI><OBJECT type="text/sitemap">
+<param name="Name" value="Web" >
+<param name="Local" value="BrowserView.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Welcome" >
+<param name="Local" value="default.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Welcome to Innovasys RealWorld" >
+<param name="Local" value="default.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Width" >
+<param name="Local" value="ScribbleLineWidth.html" >
+</OBJECT> 
+<LI><OBJECT type="text/sitemap">
+<param name="Name" value="Window" >
+<param name="Local" value="OpenViews.html" >
+</OBJECT> 
+
+</UL>
+</BODY></HTML>

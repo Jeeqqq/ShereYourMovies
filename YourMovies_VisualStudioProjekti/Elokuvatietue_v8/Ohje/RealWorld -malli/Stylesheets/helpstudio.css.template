@@ -1,0 +1,65 @@
+/* Glossary links */
+
+div.hspopupbubble, div.hsglossaryreference
+{
+    left:       4px;
+    position:   absolute;
+    padding:    4px 8px 5px 4px;
+    z-index:    1;
+    width:      50%;
+    visibility:     hidden;
+    border:     1px solid #999999;
+    background:     #EFEFF7;
+    font-size:  60%;
+}
+    
+A.hsglossaryreference       
+{ 
+    COLOR:  #008000 ;
+    border-bottom: 1px dotted #008000 ;
+    text-decoration: none;
+    cursor: hand;    
+    cursor: pointer;    
+}
+
+A.hsglossaryreference:link
+{
+    COLOR : #008000
+}
+
+A.hsglossaryreference:active
+{
+    COLOR : #008000
+}
+
+A.hsglossaryreference:visited
+{
+    COLOR : #008000
+}
+
+A.hsglossaryreference:hover
+{
+    COLOR : #008000
+}
+
+/* End Glossary Links */ 
+
+%%include file=..\..\..\..\..\DocumentX5\Configuration\Templates\Common\Stylesheets\2008.css imagesdirectory=../images/%%
+
+%%include file=..\..\..\..\..\DocumentX5\Configuration\Templates\Common\Stylesheets\Colorization.css%%
+
+img#languageFilterImage
+{
+    border:     0;
+    margin-left:    10;
+    vertical-align: middle;
+}
+
+.languageFilter, .membersFilter
+{
+    color:      #0000FF;
+    cursor:     hand;
+    text-decoration:underline;
+    padding-bottom: 4;
+    font-size:  8pt;
+}

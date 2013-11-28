@@ -1,0 +1,15 @@
+table.hs-box
+{
+	border: buttonshadow 1px solid; 
+	border-top: buttonshadow 1px solid; 
+	margin-top: 4px; 
+	margin-bottom: 4px; 
+	border-collapse: collapse;
+	background-color: infobackground;
+}
+table.hs-box td
+{
+	padding: 4px;
+	vertical-align: top;
+	background-color: infobackground;
+}

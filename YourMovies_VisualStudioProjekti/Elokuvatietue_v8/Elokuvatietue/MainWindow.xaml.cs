@@ -1,0 +1,437 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Windows.Forms.Integration;
+using System.IO;
+using System.Printing;
+using System.Configuration;
+using Elokuvatietue.Ikkunat;
+
+
+namespace Elokuvatietue
+{
+    public partial class MainWindow : Window
+    {
+        List<Elokuva> etsityt;
+        ElokuvaLista movies;
+        MusiikkiLista musat;
+        List<Lisatiedot> newWTiedot;
+        List<MenuItem> esine;
+        Asetukset newWAsetukset;
+        string valittulista;
+        string filePath;
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            myIni();
+            listatTyhjat();
+        }
+
+        public void myIni() 
+        {
+            etsityt = new List<Elokuva>();
+            movies = new ElokuvaLista();
+            newWTiedot = new List<Lisatiedot>();
+            esine = new List<MenuItem>();
+            int i = 0;
+            if (!Directory.Exists(@"Listat"))
+            {
+                Directory.CreateDirectory(@"Listat");
+            }
+
+            foreach (String item in Directory.EnumerateFiles(@"Listat", "*", SearchOption.AllDirectories).Select(System.IO.Path.GetFileNameWithoutExtension))
+            {
+                esine.Add(new MenuItem());
+                esine[i].Header = item;
+                esine[i].Click += new RoutedEventHandler(MenuItemClick);
+                mnOmatelo.Items.Add(esine[i]);
+                i++;
+            }
+            valittulista = Properties.Settings.Default.OletusListaNimi.ToString();
+            filePath = @"Listat/" + valittulista + ".xml";
+            if (File.Exists(filePath))
+            {
+                Serialisointi.DeSerialisoiXml(filePath, ref movies);
+            }
+            else
+            {
+                MessageBox.Show("Oletus listaa ei ole enää olemassa!", "Virhe", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            etsityt = movies.Movies;
+
+            paivitaDatagrid(movies.Movies);
+            this.SizeToContent = SizeToContent.WidthAndHeight;
+        }
+        private void paivitaDatagrid(List<Elokuva> leffat)
+        {
+            dtGrid.ItemsSource = null;
+            dtGrid.ItemsSource = leffat;
+            txbCount.Text = ""+leffat.Count;
+            this.SizeToContent = SizeToContent.WidthAndHeight;
+        }
+        private void paivitaDatagrid(List<Musiikki> mLista)
+        {
+            dtGrid.ItemsSource = null;
+            dtGrid.ItemsSource = mLista;
+            txbCount.Text = "" + mLista.Count;
+        }
+        public void listatTyhjat() 
+        {
+            if (mnOmatelo.Items.Count <= 0)
+            {
+                mnOmatelo.IsEnabled = false;
+            }
+            else
+            {
+                mnOmatelo.IsEnabled = true;
+            }
+
+            if (mnOmatmus.Items.Count <= 0)
+            {
+                mnOmatmus.IsEnabled = false;
+            }
+            else
+            {
+                mnOmatmus.IsEnabled = true;
+            }
+        }
+
+        
+        #region Listat
+        private void ElokuvatUusiLista_Click_1(object sender, RoutedEventArgs e)
+        {
+            this.Cursor = Cursors.Wait;
+            //ilmoitus käyttäjälle
+            Echo(string.Format("Valitse kansio josta haetaan elokuvia uutta listaa varten!"));
+            dtGrid.ItemsSource = null;
+            movies.Movies.Clear();
+
+            System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
+            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+
+            if (result.ToString() == "OK")
+            {
+                DirectoryInfo di = new DirectoryInfo(dialog.SelectedPath);
+
+                IEnumerable<FileInfo> files = GetFilesByExtensions(di, ".mkv", ".avi", ".wmv", ".mp4");
+                foreach (FileInfo file in files)
+                {
+
+                    movies.Movies.Add(new Elokuva(file.Name, file.FullName));
+
+                }
+
+                //ilmoitus käyttäjälle
+                Echo(string.Format("Elokuvien etsintä päättynyt, anna uudelle listalle nimi!"));
+                ListaName uusiNimi = new ListaName();
+                uusiNimi.ShowDialog();
+
+                esine.Add(new MenuItem());
+                esine[esine.Count-1].Header = uusiNimi.Nimi;
+                esine[esine.Count-1].Click += new RoutedEventHandler(MenuItemClick);
+                mnOmatelo.Items.Add(esine[esine.Count-1]);
+                valittulista = uusiNimi.Nimi;
+
+                paivitaDatagrid(movies.Movies);
+                this.SizeToContent = SizeToContent.WidthAndHeight;
+                //ilmoitus käyttäjälle
+                Echo(string.Format("Elokuvat haettu kansiosta ja lisätty uuteen listaan nimeltä " + uusiNimi.Nimi));
+            }
+            this.Cursor = Cursors.Arrow;
+        }
+
+        private void ElokuvatPoistaLista_Click_1(object sender, RoutedEventArgs e)
+        {
+            this.Cursor = Cursors.Wait;
+            try
+            {
+                MessageBoxResult rs;
+                rs = MessageBox.Show("Haluatko varmasti poistaa listan " + valittulista + "?", "Varmistus", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (rs == MessageBoxResult.No)
+                {
+                    return;
+                }
+
+                foreach (MenuItem item in esine)
+                {
+                    if (valittulista == item.Header.ToString())
+                    {
+                        dtGrid.ItemsSource = null;
+                        mnOmatelo.Items.Remove(item);
+                        File.Delete(@"Listat\" + item.Header + ".xml");
+                    }
+                }
+                this.SizeToContent = SizeToContent.WidthAndHeight;
+                //ilmoitus käyttäjälle
+                Echo(string.Format("Valittu lista poistettiin onnistuneesti!"));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            this.Cursor = Cursors.Arrow;
+        }
+        private void ElokuvatTallennaLista_Click_1(object sender, RoutedEventArgs e)
+        {
+            Serialisointi.SerialisoiXml(@"Listat\" + valittulista + ".xml", movies);
+            MessageBox.Show("Tallentaminen onnistui", "Onnistu!", MessageBoxButton.OK, MessageBoxImage.Information);
+            //ilmoitus käyttäjälle
+            Echo(string.Format("Elokuvalista tallennettu onnistuneesti!"));
+        }
+        #endregion
+        #region TiedostonHaut
+        private void ElokuvatUusiKansio_Click_1(object sender, RoutedEventArgs e)
+        {
+            this.Cursor = Cursors.Wait;
+            //ilmoitus käyttäjälle
+            Echo(string.Format("Valitse uusi kansio, josta haetaan elokuvia listaan!"));
+            System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
+            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+            
+
+            if (result.ToString() == "OK")
+            {
+                DirectoryInfo di = new DirectoryInfo(dialog.SelectedPath);
+
+                IEnumerable<FileInfo> files =GetFilesByExtensions(di,".mkv",".avi",".wmv",".mp4",".mpeg");
+                    //di.GetFiles("*", SearchOption.AllDirectories);
+                foreach (FileInfo file in files)
+                {
+                    
+                    movies.Movies.Add(new Elokuva(file.Name, file.FullName));
+
+                }
+                paivitaDatagrid(movies.Movies);
+                //ilmoitus käyttäjälle
+                Echo(string.Format("Elokuvat haettu kansiosta ja lisätty nykyiseen listaan!"));
+            }
+            this.Cursor = Cursors.Arrow;
+        }
+        public  IEnumerable<FileInfo> GetFilesByExtensions(DirectoryInfo dir, params string[] extensions)
+        {
+            if (extensions == null)
+                throw new ArgumentNullException("extensions");
+            IEnumerable<FileInfo> files = dir.EnumerateFiles("*",SearchOption.AllDirectories);
+            return files.Where(f => extensions.Contains(f.Extension));
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            //musiikkitiedostonejen haku
+            //ilmoitus käyttäjälle
+            Echo(string.Format("Valitse uusi kansio, josta haetaan Musiikkia listaan!"));
+            System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
+            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+
+
+            if (result.ToString() == "OK")
+            {
+                DirectoryInfo di = new DirectoryInfo(dialog.SelectedPath);
+
+                IEnumerable<FileInfo> files = GetFilesByExtensions(di, ".mp3", ".waw", ".flac", ".midi",".wma");
+                //di.GetFiles("*", SearchOption.AllDirectories);
+                foreach (FileInfo file in files)
+                {
+
+                    musat.Musa.Add(new Musiikki(file.Name, file.FullName));
+
+                }
+                paivitaDatagrid(musat.Musa);
+                //ilmoitus käyttäjälle
+                Echo(string.Format("Muusikit haettu kansiosta ja lisätty nykyiseen listaan!"));
+            }
+
+
+        }
+        #endregion
+
+        #region Asetukset
+        private void MenuExit_Click_1(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+
+        private void MenuAsetukset_Click_1(object sender, RoutedEventArgs e)
+        {
+            newWAsetukset = new Asetukset();
+
+            foreach (Lisatiedot item in newWTiedot)
+            {
+                item.Close();
+            }
+
+            newWTiedot.Clear();
+
+            newWAsetukset.ShowDialog();
+            movies.Movies.Clear();
+            valittulista = Properties.Settings.Default.OletusListaNimi.ToString();
+            string filePath = @"Listat/" + valittulista + ".xml";
+            if (File.Exists(filePath))
+            {
+                Serialisointi.DeSerialisoiXml(filePath, ref movies);
+            }
+            else
+            {
+                MessageBox.Show("Oletus listaa ei ole enää olemassa!", "Virhe", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            paivitaDatagrid(movies.Movies);
+        }
+
+        private void Help_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            System.Windows.Forms.Help.ShowHelp(null, @"Elokuvaohje.chm");
+            //ilmoitus käyttäjälle
+            Echo(string.Format("Näytetään sovelluksen Help-tiedosto"));
+        }
+
+        private void Print_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            PrintDialog printDlg = new PrintDialog();
+            if (printDlg.ShowDialog().GetValueOrDefault(false))
+            {
+            printDlg.PrintVisual(dtGrid, "Printing Grid");
+            }
+
+            //ilmoitus käyttäjälle
+            Echo(string.Format("Tulostetaan nykyinen elokuvalista!"));
+        }
+
+        private void MenuItemClick(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = (MenuItem)sender;
+            valittulista = item.Header.ToString();
+            Serialisointi.DeSerialisoiXml("Listat/" + item.Header + ".xml", ref movies);
+
+            paivitaDatagrid(movies.Movies);
+            dtGrid.Columns[1].Width = new DataGridLength(0, DataGridLengthUnitType.SizeToCells);
+            this.SizeToContent = SizeToContent.WidthAndHeight;
+        }
+
+        private void mnAbout_Click_1(object sender, RoutedEventArgs e)
+        {
+            AboutBox1 abouttia = new AboutBox1();
+            abouttia.ShowDialog();
+        }
+
+        #endregion
+
+        private void btnOpenInfo_Click(object sender, RoutedEventArgs e)
+        {
+            this.Cursor = Cursors.Wait;
+                
+            if (Properties.Settings.Default.uusiIkkuna == true)
+            {
+                if (Properties.Settings.Default.Maxikkuna <= newWTiedot.Count)
+                {
+                    int j = newWTiedot.Count - Properties.Settings.Default.Maxikkuna + 1;
+
+                    for (int i = 0; i < j; i++)
+                    {
+                        newWTiedot[i].Close();
+                        newWTiedot.RemoveAt(i);
+                    }
+
+                }
+                newWTiedot.Add(new Lisatiedot(movies.Movies[dtGrid.SelectedIndex]));//movies[dtGrid.SelectedIndex]
+                newWTiedot[newWTiedot.Count - 1].Show();
+                //ilmoitus käyttäjälle
+                Echo(string.Format("Näytetään lisätietoja elokuvasta " + movies.Movies[dtGrid.SelectedIndex].Nimi));
+            }
+            else
+            {
+                if (newWTiedot.Count >= 1)
+                {
+                    foreach (Lisatiedot item in newWTiedot)
+                    {
+                        item.Close();
+                    }
+                }
+                if (dtGrid.SelectedIndex != -1)
+                {
+                    newWTiedot.Add(new Lisatiedot(movies.Movies[dtGrid.SelectedIndex]));//movies[dtGrid.SelectedIndex]
+                    newWTiedot[newWTiedot.Count - 1].Show();
+
+                    //ilmoitus käyttäjälle
+                    Echo(string.Format("Näytetään lisätietoja elokuvasta " + movies.Movies[dtGrid.SelectedIndex].Nimi));
+                }
+            }
+            this.Cursor = Cursors.Arrow;
+        }
+        #region työkalut
+        private void txtEtsi_KeyUp(object sender, KeyEventArgs e)
+        {
+            string hakuSana = txtEtsi.Text;
+            etsityt = null;
+            etsityt = movies.Movies.FindAll(
+                                             delegate(Elokuva elo)
+                                              {
+                                                return elo.Nimi.Contains(hakuSana);
+
+                                                });
+
+            if(etsityt != null)
+            paivitaDatagrid(etsityt);
+            //ilmoitus käyttäjälle
+            Echo(string.Format("Etsitään elokuvia..."));
+
+        }
+
+        private void RadioButtonTogle_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender.Equals(rdKylla))
+            {
+                // etsitään Elokuvat jotka on jo nähty
+                List<Elokuva> filteroidyt = movies.Movies.FindAll(
+                                                                  delegate(Elokuva elo)
+                                                                  {
+                                                                      return elo.Watched == false;
+                                                                  }
+                                                                  );
+
+                paivitaDatagrid(filteroidyt);
+                //ilmoitus käyttäjälle
+                Echo(string.Format("Näytetään vain elokuvat, jotka olet jo katsonut"));
+            }
+            else
+            {
+                paivitaDatagrid(movies.Movies);
+                //ilmoitus käyttäjälle
+                Echo(string.Format("Näytetään kaikki elokuvat"));
+            }
+
+
+        }
+       
+        private void btnPoista_Click(object sender, RoutedEventArgs e)
+        {
+          int index=  dtGrid.SelectedIndex;
+          if (index > -1 && index != movies.Movies.Count)
+          {
+              movies.Movies.RemoveAt(index);
+              paivitaDatagrid(movies.Movies);
+              //ilmoitus käyttäjälle
+              Echo(string.Format("Elokuva poistettu onnistuneesti!"));
+          }
+        }
+
+        private void Echo(string msg)
+        {
+            stbViestit.Text = msg;
+        }
+ #endregion
+        
+    }
+}

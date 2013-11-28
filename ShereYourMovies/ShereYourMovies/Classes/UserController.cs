@@ -88,11 +88,14 @@ namespace ShereYourMovies.Classes
 
             var users = from User in db.User
                         select User;
-            foreach (User u in users)
+            if (users.Count() > 0)
             {
-                if (u.UserName == uName)
+                foreach (User u in users)
                 {
-                    return true;
+                    if (u.UserName == uName)
+                    {
+                        return true;
+                    }
                 }
             }
             return false;

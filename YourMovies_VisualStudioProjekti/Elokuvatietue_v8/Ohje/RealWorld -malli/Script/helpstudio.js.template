@@ -1,0 +1,102 @@
+%%include file=..\..\Common\Script\common.js%%
+
+%%include file=..\..\Common\Script\2008.js%%
+
+%%include file=..\..\Common\Script\xml.js%%
+
+function bodyLoad()
+{   
+    bodyLoadCommonBefore();
+    bodyLoadCommonAfter();
+    if(parent)
+        parent.loaded = true;
+}
+
+function loadSettings()
+{
+    loadSettingsCommon();
+    
+    // load the community feature states
+    try
+    {
+        ic_loadCommunityFeatureStates();
+    }
+    catch(ex) {}      
+}
+
+function saveSettings()
+{
+    saveSettingsCommon();
+    
+    // Community
+    try {ic_saveCommunityFeatureStates();} catch(ex) {}    
+}
+
+/* Glossary boxes */
+
+function hsShowGlossaryItemBox(term,definition,e){
+
+    if (window.event)
+        e = window.event;
+
+    hideBoxes(e);
+
+    var button = sourceElement(e);
+    var documentWidth;
+    var documentHeight;
+    var boxWidth;
+    var pixelLeft;
+    var pixelTop;
+    var boxHeigt;
+    var boxWidth;
+
+    cancelEvent(e);
+
+    var div = documentElement("hsglossaryitembox")
+    if (div && button) {
+
+        // Have the browser size the box
+        div.style.height = "";
+        div.style.width = "";
+
+        // Clear the tooltip so it doesn't appear above the popup
+        button.title = "";
+
+        div.innerHTML = "<p><strong>" + term + "</strong><br>" + definition + "</p>";
+
+        pixelTop = getElementPosition(button).top + 14;
+
+        // Check if the box would go off the bottom of the visible area
+        documentHeight = document.body.clientHeight;
+        boxHeight = div.clientHeight;
+        if (pixelTop + boxHeight > documentHeight)
+        {
+            // If the box won't fit both above and below the link
+            //  using the default width then make the box wider
+            if (boxHeight >= pixelTop)
+                div.style.width = "80%";
+            else
+                pixelTop = pixelTop - 14 - boxHeight;
+        }
+        div.style.top = pixelTop + "px";
+
+        documentWidth = document.body.clientWidth;
+        boxWidth = div.clientWidth;
+        pixelLeft = button.offsetLeft;
+
+        // Check if the box would go off the edge of the visible area
+        if (pixelLeft + boxWidth > documentWidth)
+        {
+            pixelLeft = documentWidth - boxWidth - 5;
+        }
+        div.style.left = pixelLeft + "px";
+
+        // Show the box
+        div.style.visibility = "visible";
+    }
+
+}
+
+/* End Glossary boxes */
+
+%%include file=..\..\Common\Script\help2.js%%

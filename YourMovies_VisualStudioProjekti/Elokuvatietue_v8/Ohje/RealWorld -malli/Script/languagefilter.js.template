@@ -1,0 +1,165 @@
+window.onload = hsLanguageFilteredBodyLoad;
+
+// Current language
+var curLang = "";
+
+function hsLanguageFilteredBodyLoad()
+{
+
+    var i;
+    var b;
+    var l;
+
+    bodyLoadCommonBefore();
+
+    // Check the context window for current language.
+    try
+    {
+        for (i=1; i< window.external.ContextAttributes.Count; i++)
+        {
+            if(window.external.ContextAttributes(i).Name.toUpperCase()=="DEVLANG")
+            {
+                b = window.external.ContextAttributes(i).Values.toArray();
+                curLang = b[0].toUpperCase();
+            }
+        }
+    }
+    catch(e)
+    {
+    }
+
+    if (curLang != null)
+    {
+        if (curLang.indexOf("VB") != -1)
+        {
+            curLang = "VB";
+        }
+        if (curLang.indexOf("VC") != -1)
+        {
+            curLang = "CPP";
+        }
+        if (curLang.indexOf("C++") != -1)
+        {
+            curLang = "CPP";
+        }
+        if (curLang.indexOf("CSHARP") != -1)
+        {
+            curLang = "CS";
+        }
+        if (curLang.indexOf("JSCRIPT") != -1)
+        {
+            curLang = "JScript";
+        }
+    }
+
+    if (curLang == null)
+    {
+        l = "";
+        var multipleLang = false;
+        var cLang = "";
+
+        try
+        {
+            l = window.external.Help.FilterQuery.toUpperCase();
+        }
+        catch(e)
+        {
+        }
+
+        if (l.indexOf("VB") != -1)
+        {
+            cLang = "VB";
+        }
+
+        if (l.indexOf("VC") != -1)
+        {
+            if (cLang != null)
+            {
+                multipleLang = true;
+            }
+            cLang = "CPP";
+        }
+
+        if (l.indexOf("C#") != -1)
+        {
+            if (cLang != null)
+            {
+                multipleLang = true;
+            }
+            cLang = "CS";
+        }
+
+        if (l.indexOf("CSHARP") != -1)
+        {
+            if (cLang != null)
+            {
+                multipleLang = true;
+            }
+            cLang = "CS";
+        }
+
+        if (l.indexOf("JSCRIPT") != -1)
+        {
+            if (cLang != null)
+            {
+                multipleLang = true;
+            }
+            cLang = "JScript";
+        }
+
+        if (l.indexOf("JSHARP") != -1)
+        {
+            if (cLang != null)
+            {
+                multipleLang = true;
+            }
+            cLang = "JSHARP";
+        }
+
+        if (multipleLang == false)
+        {
+            curLang = cLang;
+        }
+    }
+
+    bodyLoadCommonAfter();
+    
+    // load the languages   
+    loadLanguages();
+    configureLanguageCheckboxes();
+    displayLanguages();    
+    
+    window.onunload = hsLanguageFilteredWindowUnload;  
+    
+    if(parent)
+        parent.loaded = true;
+
+}
+
+function hsLanguageFilteredWindowUnload()
+{
+    saveLanguages();    
+    windowUnload();
+}
+
+function loadSettings()
+{
+    loadSettingsCommon();
+    
+    // load the community feature states
+    try
+    {
+        ic_loadCommunityFeatureStates();
+    }
+    catch(ex) {}     
+}
+
+function saveSettings()
+{
+    saveSettingsCommon();
+
+    // Community
+    try {ic_saveCommunityFeatureStates();} catch(ex) {}       
+}
+
+%%include file=..\..\common\script\languagefilter.js%%
