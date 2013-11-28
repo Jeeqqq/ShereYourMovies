@@ -39,26 +39,29 @@ namespace ShereYourMovies.Classes
         //Muuttujat
         [Column(Storage = "ElokuvaID", Name = "ElokuvaID", DbType = "BigInt IDENTITY NOT NULL", IsPrimaryKey = true, IsDbGenerated = true, UpdateCheck = UpdateCheck.Never)]
         private int ElokuvaID;
+        //Ohjelmassa käytettävä id
+        [Column]
+        public int ID { get { return ElokuvaID; } set { ElokuvaID = value; } }
         [Column]
         public string FilePath { get; set; }
         [Column]
         public string Pituus { get; set; }
         [Column]
         public string VideoEncoding { get; set; }
-       [Column]
+        [Column]
         public string SoundEncoding { get; set; }
-      [Column]
+        [Column]
         public string TiedostonKoko { get; set; }
-       [Column]
+        [Column]
         public string Resolution { get; set; }
         [Column]
         public string Fps { get; set; }
         [Column]
         public int Tahdet { get; set; }
         [Column]
-         public string Nimi { get; set; }
+        public string Nimi { get; set; }
         [Column]
-         public bool Watched { get; set; }
+        public bool Watched { get; set; }
         // yhdistetään Elokuva taulu MOvie tauluun.
 
         private EntitySet<Movie> _DbTiedot;

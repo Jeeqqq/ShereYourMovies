@@ -14,6 +14,14 @@
         AllowSorting="true"
         AllowPaging="true"
 
+        OnSorting="grdElokuvat_Sorting"
+        OnSelectedIndexChanging="grdElokuvat_SelectedIndexChanging"
+        OnPageIndexChanging="grdElokuvat_PageIndexChanging" 
+        OnRowCancelingEdit="grdElokuvat_RowCancelingEdit" 
+        OnRowDeleting="grdElokuvat_RowDeleting" 
+        OnRowEditing="grdElokuvat_RowEditing" 
+        OnRowUpdating="grdElokuvat_RowUpdating"
+
         BackColor="LightGoldenrodYellow" 
         BorderColor="Tan" 
         BorderWidth="1px" 
@@ -30,7 +38,8 @@
         <SortedDescendingCellStyle BackColor="#E1DB9C" />
         <SortedDescendingHeaderStyle BackColor="#C2A47B" />
         <Columns>
-            <asp:BoundField DataField="Nimi" HeaderText="Nimi" SortExpression="nimi" />
+            <asp:BoundField DataField="Nimi" HeaderText="Nimi" SortExpression="Nimi" />
+            <asp:BoundField DataField="Tahdet" HeaderText="Tähdet" SortExpression="Tahdet" />
         </Columns>
     </asp:GridView>
 </asp:Content>
