@@ -1,6 +1,8 @@
-﻿using ShereYourMovies.Classes;
+﻿using MySql.Data.MySqlClient;
+using ShereYourMovies.Classes;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -45,19 +47,7 @@ namespace ShereYourMovies
                 }
                 Response.Cookies.Set(responseCookie);
             }
-
-            if(Session["UserAuthentication"] == null )
-            {
-                if (Request.Url.AbsolutePath == "/Account/Login" || Request.Url.AbsolutePath == "/Account/Register")
-                {
-                    
-                }
-                else Response.Redirect("/Account/Login"); ;
-            }
             
-
-
-
 
             Page.PreLoad += master_Page_PreLoad;
         }
@@ -68,7 +58,8 @@ namespace ShereYourMovies
             {
                 if (Session["db"] == null)
                 {
-                    SqlConnection myConnection = new SqlConnection(@"Data Source=(LocalDb)\v11.0;Initial Catalog=shareyourmovies;Integrated Security=True");
+                    string con = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                    SqlConnection myConnection = new SqlConnection(con);
                     YourMovies db = new YourMovies(myConnection);
                     Session["db"] = db;
                 }
@@ -80,11 +71,7 @@ namespace ShereYourMovies
             }
             else
             {
-                if (Session["UserAuthentication"] != null)
-                {
-
-                    ViewState[AntiXsrfUserNameKey] = Session["UserAuthentication"];
-                }
+                
                 // Validate the Anti-XSRF token
                 if ((string)ViewState[AntiXsrfTokenKey] != _antiXsrfTokenValue
                     || (string)ViewState[AntiXsrfUserNameKey] != (Context.User.Identity.Name ?? String.Empty))
@@ -98,12 +85,11 @@ namespace ShereYourMovies
         {
             //aja tämä vain kerran ja sitten kommentoi tämä rivi. tuon construoktori luo yhen leffan ja yhen käyttäjän
             //username:Teppo ja pass: salasana
-            ElokuvaController eController = new ElokuvaController();
-        }
-        protected void logout(object sender, EventArgs e)
-        {
-            Session["UserAuthentication"] = null;
+            //  ElokuvaController.initDatabase(ref db);
+            
+            
             
         }
+       
     }
 }

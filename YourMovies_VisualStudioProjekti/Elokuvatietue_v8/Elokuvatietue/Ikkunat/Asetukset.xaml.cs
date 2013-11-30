@@ -18,17 +18,22 @@ namespace Elokuvatietue
     /// </summary>
     public partial class Asetukset : Window
     {
-        public Asetukset()
+        public Asetukset(string username, ref YourMovies db)
         {
             InitializeComponent();
-            myIni();
+            myIni(username, ref db);
         }
-        public void myIni()
+        public void myIni(string username, ref YourMovies db)
         {
             lstAsetukset.Items.Add("Yleiset asetukset");
             gridAsetukset.Visibility = Visibility.Hidden;
             txtMaxikkuna.Text = Properties.Settings.Default.Maxikkuna.ToString();
-            txtOletusLista.Text = Properties.Settings.Default.OletusListaNimi.ToString();
+            var listat = ElokuvaController.getListNames(username, ref db);
+            if (listat != null)
+            {
+                txtOletusLista.ItemsSource = listat;
+            }
+           
             if (Properties.Settings.Default.uusiIkkuna == true)
             {
                 chkIkkuna.IsChecked = true;
@@ -75,6 +80,14 @@ namespace Elokuvatietue
                 txtOletusLista.Text = tmp[0];
                 Properties.Settings.Default.OletusListaNimi = tmp[0];
             }
+        }
+
+
+
+        private void txtOletusLista_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (txtOletusLista.SelectedIndex != -1)
+                Properties.Settings.Default.OletusListaNimi = txtOletusLista.Items[txtOletusLista.SelectedIndex].ToString();
         }
 
         

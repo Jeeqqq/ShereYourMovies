@@ -1,6 +1,4 @@
-﻿<%@ Page Title="Manage Account" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Manage.aspx.cs" Inherits="ShereYourMovies.Account.Manage" %>
-<%@ Register Src="~/Account/OpenAuthProviders.ascx" TagPrefix="uc" TagName="OpenAuthProviders" %>
-
+﻿<%@ Page Title="Manage Account" Language="C#" MasterPageFile="~/MasterSite/Site.Master" AutoEventWireup="true" CodeBehind="Manage.aspx.cs" Inherits="ShereYourMovies.Account.Manage" %>
 <asp:Content ContentPlaceHolderID="MainContent" runat="server">
     <hgroup class="title">
         <h1><%: Title %>.</h1>
@@ -120,7 +118,6 @@
             </ItemTemplate>
         </asp:ListView>
 
-        <h3>Add an external login</h3>
-        <uc:OpenAuthProviders runat="server" ReturnUrl="~/Account/Manage" />
+        
     </section>
 </asp:Content>

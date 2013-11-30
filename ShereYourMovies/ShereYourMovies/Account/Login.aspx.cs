@@ -17,29 +17,6 @@ namespace ShereYourMovies.Account
 
         }
 
-        protected void Login_Authenticate(object sender, AuthenticateEventArgs e)
-        {
-            
-            YourMovies db =(YourMovies) Session["db"];
-
-            if (UserController.Authenticate(loginWindow.UserName.ToString(), loginWindow.Password.ToString(),ref db))
-            {
-                e.Authenticated = true;
-            }
-            else
-            {
-                e.Authenticated = false;
-            }
-        }
-        protected void Login_LoginError(object sender, EventArgs e)
-        {
-            Session["UserAuthentication"] = null;
-        }
-        protected void Login_LoggedIn(object sender, EventArgs e)
-        {
-            Session["UserAuthentication"] = loginWindow.UserName.ToString();
-            Response.Redirect("~");
-        }
 
     }
 }

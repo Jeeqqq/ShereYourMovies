@@ -22,14 +22,18 @@ namespace Elokuvatietue
     /// </summary>
     public partial class Lisatiedot : Window
     {
+        int MovieID;
+        Movie leffa;
         public Lisatiedot(Elokuva movie)
         {
+            leffa = movie.DbTiedot;
             InitializeComponent();
             myIni(movie);
         }
 
         public void myIni(Elokuva movie)
         {
+            MovieID = movie.MovieID;
             myGrid.DataContext = movie;
             loadImage(movie.DbTiedot);
         }
@@ -66,11 +70,12 @@ namespace Elokuvatietue
         private void btnEtsi_Click(object sender, RoutedEventArgs e)
         {
             this.Cursor = Cursors.Wait;
-            SearchWindow sWindow = new SearchWindow();
+            SearchWindow sWindow = new SearchWindow(leffa);
             sWindow.ShowDialog();
             this.Cursor = Cursors.Arrow;
             if (sWindow.Leffa.Title != null)
             {
+                
                 btnEtsi.DataContext = sWindow.Leffa;
                 loadImage(sWindow.Leffa);
                 btnMuokkaa.DataContext = txtTitle.Text;

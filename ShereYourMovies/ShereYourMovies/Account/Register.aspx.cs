@@ -29,20 +29,6 @@ namespace ShereYourMovies.Account
             Response.Redirect(continueUrl);
         }
 
-        protected void RegisterUser_CreatingUser(object sender, LoginCancelEventArgs e)
-        {
-            YourMovies db = (YourMovies)Session["db"];
-
-            string msg = UserController.RegisterUser(RegisterUser.UserName, RegisterUser.Password, ref db);
-
-            if (msg == "")
-            {
-                Session["UserAuthentication"] = RegisterUser.UserName;
-            }
-            else
-            {
-                
-            }
-        }
+        
     }
 }

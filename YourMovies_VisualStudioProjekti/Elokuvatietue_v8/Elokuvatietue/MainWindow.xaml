@@ -63,7 +63,7 @@
                             </MenuItem.ToolTip>
                         </MenuItem>
                         <Separator/>
-                        <MenuItem Header="Poista lista" Click="ElokuvatPoistaLista_Click_1">
+                        <MenuItem x:Name="PoistaLista" Header="Poista lista" Click="ElokuvatPoistaLista_Click_1">
                             <MenuItem.ToolTip>
                                 <ToolTip Content="Poistaa valitun listan"/>
                             </MenuItem.ToolTip>

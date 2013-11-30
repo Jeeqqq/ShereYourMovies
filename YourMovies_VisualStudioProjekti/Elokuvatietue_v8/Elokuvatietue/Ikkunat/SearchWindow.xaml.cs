@@ -21,8 +21,9 @@ namespace ImdbApi
         Result result;
         public Movie Leffa { get; set; }
 
-        public SearchWindow()
+        public SearchWindow(Movie movie)
         {
+            Leffa = movie;
             InitializeComponent();
             myIni();
 
@@ -30,7 +31,7 @@ namespace ImdbApi
 
         private void myIni()
         {
-            Leffa = new Movie();
+            
             result = new Result();
             SearchResult tyhja = new SearchResult();
             tyhja.Title = "Etsi elokuva";
@@ -59,9 +60,9 @@ namespace ImdbApi
         {
             if (lbResults.SelectedIndex != -1)
             {
-                Root root = new Root();
-                Search.DeSerialisoiIdSeach(txbId.Text, ref root);
-                Leffa = root.leffa;
+                Movie movie = Leffa;
+                Search.DeSerialisoiIdSeach(txbId.Text, ref movie);
+                Leffa = movie;
             }
             else
             {

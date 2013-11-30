@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using MediaInfoLib;
-using System.Xml.Serialization;
 using System.Net;
 using System.IO;
+using System.Data.Linq.Mapping;
+using System.Data.Linq;
 using System.Xml;
+using System.Xml.Serialization;
 using ImdbApi;
+using MediaInfoLib;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 namespace Elokuvatietue
 {
     #region lista kaikista elokuvista
@@ -27,55 +30,112 @@ namespace Elokuvatietue
         [XmlElement("movie")]
         public List<Elokuva> Movies{ get; set; }
 
-     
+        public int movieCount
+        {
+            get
+            {
+                return Movies.Count;
+            }
+
+        }
        
       
     }
     #endregion
     #region Elukuva luokka
-    [Serializable()]
-    public class Elokuva
+    [Table(Name = "Elokuva")]
+    public class Elokuva 
     {
         #region muuttujat
-        //Muuttujat
-         [XmlElement("FilePath")]
-        public string FilePath { get; set; }
-        [XmlElement("Pituus")]
-       public string Pituus { get; set; }
-        [XmlElement("VideoEncoding")]
-        public string VideoEncoding { get; set; }
-        [XmlElement("SoundEncoding")]
-        public string SoundEncoding { get; set; }
-        [XmlElement("TiedostonKoko")]
-        public string TiedostonKoko { get; set; }
-        [XmlElement("Resolution")]
-        public string Resolution { get; set; }
-        [XmlElement("Fps")]
-        public string Fps { get; set; }
-         [XmlElement("Tahdet")]
-        public int Tahdet { get; set; }
-         [XmlElement("Nimi")]
-         public string Nimi { get; set; }
-         [XmlElement("Katsottu")]
-         public bool Watched { get; set; }
-        // databasesta saatu Objekti
-        [XmlElement("movie")]
-         public Movie DbTiedot { get; set; }
 
+        //yhdistetään User Taulu Elokuva Tauluun
+        [Column]
+        public string UserName;
+
+        //Muuttujat
+        private int _elokuvaID;
+        [Column(DbType = "BigInt IDENTITY NOT NULL", IsPrimaryKey = true, IsDbGenerated = true)]
+        public int ElokuvaID 
+        {
+            set 
+            { _elokuvaID = value;
+           // NotifyPropertyChanged();
+            }
+            get { return _elokuvaID; } 
+        
+        }
+
+        //elokuvia voidaan lisätä eri listoihin, tämä muuttuja pitää listan nimen sisällään.
+        [Column]
+        public string Lista { get; set; }
+        [Column]
+        public string FilePath { get; set; }
+        [Column]
+        public string Pituus { get; set; }
+        [Column]
+        public string VideoEncoding { get; set; }
+        [Column]
+        public string SoundEncoding { get; set; }
+        [Column]
+        public string TiedostonKoko { get; set; }
+        [Column]
+        public string Resolution { get; set; }
+        [Column]
+        public string Fps { get; set; }
+        [Column]
+        public int Tahdet { get; set; }
+        [Column]
+        public string Nimi { get; set; }
+        [Column]
+        public bool Watched { get; set; }
+        // yhdistetään Elokuva taulu MOvie tauluun.
+
+        
+        
+        private EntityRef<Movie> _DbTiedot= new EntityRef<Movie>();
+        [Association(Name = "FK_ELOKUVA_MOVIE", IsForeignKey = true, Storage = "_DbTiedot", ThisKey = "movieId", OtherKey = "MovieID", DeleteRule = "CASCADE")]
+        public Movie DbTiedot
+        {
+            get { return this._DbTiedot.Entity; }
+            set {
+                
+                
+                this._DbTiedot.Entity=value;
+            
+            
+            }
+        }
+
+        [Column(DbType = "BigInt")]
+        private int movieId;
+        
+        public int MovieID
+        {
+            get { return movieId; }
+            set { movieId = value; }
+        }
+        
+       
         #endregion
+
+       
+
         #region konstruktorit
         public Elokuva()
-         {
-
-         }
+        {
+           
+        }
         public Elokuva(string nimi, string ohjaaja, string genre, int tahdet) 
         {
-            DbTiedot = new Movie();
+
+            Movie movie = new Movie();
             Nimi = nimi;
-            DbTiedot.Director = ohjaaja;
-            DbTiedot.Genre = genre;
+            movie.Director = ohjaaja;
+            movie.Genre = genre;
             Tahdet = tahdet;
-            DbTiedot = Search.getMovieInfoFromDb(Nimi);
+            movie = Search.getMovieInfoFromDb(Nimi);
+           // movie.Elokuva = this;
+            DbTiedot=movie;
             
         }
          public Elokuva(string nimi, string filePath)
@@ -94,7 +154,9 @@ namespace Elokuvatietue
             Fps = MI.Get(StreamKind.Video, 0, "FrameRate/String");
             Resolution = MI.Get(StreamKind.Video, 0, "Width") + "x" + MI.Get(StreamKind.Video, 0, "Height");
             MI.Close();
-            DbTiedot =Search.getMovieInfoFromDb(Nimi);
+            Movie movie = Search.getMovieInfoFromDb(Nimi);
+          //  movie.Elokuva = this;
+            DbTiedot=movie;
 
         }
         #endregion
@@ -133,3 +195,13 @@ namespace Elokuvatietue
     }
 #endregion
 }
+
+
+
+    
+
+        
+
+
+
+  

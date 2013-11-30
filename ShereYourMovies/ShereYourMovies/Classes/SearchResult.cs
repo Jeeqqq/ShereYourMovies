@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 
 namespace ImdbApi
 {
+    #region Elokuvan etsinnän tulokset
     [Serializable()]
     [XmlRoot("root")]
     public class Result
@@ -32,7 +33,7 @@ namespace ImdbApi
         public int Year { get; set; }
         [XmlAttribute("Type")]
         public string Type { get; set; }
-        [XmlAttribute("imdbID")]
+     [XmlAttribute("imdbID")]
         public string ImdbID { get; set; }
 
         public SearchResult()
@@ -45,6 +46,10 @@ namespace ImdbApi
             return Title+"@"+Year;
         }
     }
+
+    #endregion
+
+    #region etsinnän serialisointi
     public class Search
     {
         public static void DeSerialisoiSearch( string nimi, ref Result leffat)
@@ -56,7 +61,7 @@ namespace ImdbApi
                  HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
                  myRequest.AllowAutoRedirect = true;
                  myRequest.Method = "GET";
-                 myRequest.Timeout = 6000;
+                 myRequest.Timeout = 10000;
                  WebResponse myResponse = myRequest.GetResponse();
 
 
@@ -76,10 +81,10 @@ namespace ImdbApi
             }
 
         }
-        public static void DeSerialisoiIdSeach(string imdbID, ref Root leffat)
+        public static void DeSerialisoiIdSeach(string imdbID, ref Movie movie)
         {
             string url = "http://www.omdbapi.com/?i=" + imdbID + "&r=xml&plot=full";
-            XmlSerializer deserializer = new XmlSerializer(typeof(Root));
+
             try
             {
                 HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -91,7 +96,7 @@ namespace ImdbApi
 
                 XmlTextReader reader = new XmlTextReader(myResponse.GetResponseStream());
 
-                leffat = (Root)deserializer.Deserialize(reader);
+                Search.dezirialiseXML(ref reader, ref movie);
                 reader.Close();
                 myResponse.Close();
             }
@@ -105,5 +110,106 @@ namespace ImdbApi
             }
 
         }
+        public static void dezirialiseXML(ref XmlTextReader reader,ref Movie movie)
+        {
+           
+            XmlDocument doc = new XmlDocument();
+            doc.Load(reader);
+            XmlNode node = doc.SelectSingleNode("//movie");
+            foreach (XmlAttribute att in node.Attributes)
+            {
+                switch (att.Name)
+                {
+                    case "title":
+                        movie.Title = att.Value;
+                        break;
+                    case "year":
+                        movie.Year = att.Value;
+                        break;
+                    case "rated":
+                        movie.Rated = att.Value;
+                        break;
+                    case "runtime":
+                        movie.Runtime = att.Value;
+                        break;
+                    case "genre":
+                        movie.Genre = att.Value;
+                        break;
+                    case "director":
+                        movie.Director = att.Value;
+                        break;
+                    case "writer":
+                        movie.Writer = att.Value;
+                        break;
+                    case "actors":
+                        movie.Actors = att.Value;
+                        break;
+                    case "poster":
+                        movie.Poster = att.Value;
+                        break;
+                    case "plot":
+                        movie.Plot = att.Value;
+                        break;
+                    case "imdbRating":
+                        movie.ImdbRating = att.Value;
+                        break;
+                    case "imdbVotes":
+                        movie.ImdbVotes = att.Value;
+                        break;
+                    case "imdbID":
+                        movie.ImdbID = att.Value;
+                        break;
+                    case "type":
+                        movie.Type = att.Value;
+                        break;
+                }
+
+            }
+           
+        }
+        public static Movie getMovieInfoFromDb(string Nimi)
+        {
+            Movie movie=new Movie();
+            string url = "http://www.omdbapi.com/?t=" + Nimi + "&r=xml&plot=full";
+            try
+            {
+                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
+                myRequest.AllowAutoRedirect = true;
+                myRequest.Method = "GET";
+                myRequest.Timeout = 6000;
+                WebResponse myResponse = myRequest.GetResponse();
+
+
+                XmlTextReader reader = new XmlTextReader(myResponse.GetResponseStream());
+                Search.dezirialiseXML(ref reader,ref movie);
+                reader.Close();
+                myResponse.Close();
+
+                if (movie.Title == null)
+                {
+                    Exception e = new Exception("Elokuvan tietoja ei löytynyt");
+                    throw e;
+                }
+                
+            }
+            catch (Exception ex)
+            {
+
+                movie.Actors = "Tietoja ei löytynyt";
+                movie.Director = "Tietoja ei löytynyt";
+                movie.Genre = "Tietoja ei löytynyt";
+                movie.Title = "Tietoja ei löytynyt";
+                movie.Plot = "Tietoja ei löytynyt";
+                movie.ImdbID = "Tietoja ei löytynyt";
+                movie.ImdbRating = "Tietoja ei löytynyt";
+                movie.Rated = "Tietoja ei löytynyt";
+
+                 
+
+            }
+            return movie;
+        }
     }
+
+#endregion
 }

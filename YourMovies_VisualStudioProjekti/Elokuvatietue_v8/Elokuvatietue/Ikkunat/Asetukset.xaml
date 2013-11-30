@@ -23,7 +23,7 @@ Title="Asetukset" Height="300" Width="600" Foreground="#FFFDF8F8">
             <Label Name="lblMaxikikuna" Content="Ikkunoiden maksimi määrä" Margin="120,22,0,0" Foreground="#FFFDFDFD" />
             <TextBox Name="txtMaxikkuna" Width="50" Height="20" VerticalAlignment="Top"  HorizontalAlignment="Left" Margin="350,25,0,0" Background="#FFF0F0F0" />
             <Label Name="lblOletusLista" Content="Ohjelman käynnistyessä avatttava lista" Foreground="#FFFDFDFD" Margin="120,45,0,0"/>
-            <TextBox Name="txtOletusLista" Width="150" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="350,50,0,0" MouseDoubleClick="txtOletusLista_MouseDoubleClick" Background="#FFE4E4E4"/>
+            <ComboBox Name="txtOletusLista" Width="150" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="350,50,0,0"  Background="#FFE4E4E4" SelectionChanged="txtOletusLista_SelectionChanged"/>
         </Grid>
         <Button Name="btnSave" Content="Tallenna ja poistu" Width="120" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" Click="btnSave_Click"/>
     </Grid>

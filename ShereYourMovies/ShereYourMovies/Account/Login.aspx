@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Log in" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="ShereYourMovies.Account.Login" %>
+﻿<%@ Page Title="Log in" Language="C#" MasterPageFile="~/MasterSite/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="ShereYourMovies.Account.Login" %>
 
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
@@ -7,10 +7,7 @@
             <hgroup class="title">
         <h1><%: Title %>.</h1>
     </hgroup>
-        <asp:Login ID="loginWindow" runat="server" ViewStateMode="Disabled" RenderOuterTable="false"
-            OnAuthenticate="Login_Authenticate" 
-            OnLoginError="Login_LoginError" 
-            OnLoggedIn="Login_LoggedIn"> 
+        <asp:Login ID="loginWindow" runat="server" ViewStateMode="Disabled" RenderOuterTable="false"> 
             <LayoutTemplate>
                 <p class="validation-summary-errors">
                     <asp:Literal runat="server" ID="FailureText" />

@@ -67,12 +67,13 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Printing" />
     <Reference Include="System.Web.Extensions" />
@@ -85,6 +86,7 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Xml.Serialization" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -104,6 +106,7 @@
     <Compile Include="Ikkunat\ListaName.xaml.cs">
       <DependentUpon>ListaName.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Luokat\ElokuvaController.cs" />
     <Compile Include="Luokat\SearchResult.cs" />
     <Compile Include="Ikkunat\SearchWindow.xaml.cs">
       <DependentUpon>SearchWindow.xaml</DependentUpon>
@@ -136,6 +139,9 @@
     <Compile Include="Ikkunat\Lisatiedot.xaml.cs">
       <DependentUpon>Lisatiedot.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Luokat\User.cs" />
+    <Compile Include="Luokat\UserController.cs" />
+    <Compile Include="Luokat\YourMovies.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -176,10 +182,14 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Movie.ico" />
+    <Resource Include="Movie.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RatingControlSample\RatingControlSample\RatingControlSample.csproj">
@@ -208,10 +218,18 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="film.jpg" />
-    <Content Include="MediaInfo.dll" />
-    <Resource Include="noImage.jpg" />
-    <Resource Include="No-Photo-Available.jpg" />
+    <Resource Include="film.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="MediaInfo.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="noImage.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="No-Photo-Available.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

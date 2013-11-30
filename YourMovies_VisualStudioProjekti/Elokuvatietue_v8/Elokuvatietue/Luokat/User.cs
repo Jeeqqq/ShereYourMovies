@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 
-namespace ShereYourMovies.Classes
+namespace Elokuvatietue
 {
     [Table(Name="User")]
     public class User
@@ -25,7 +25,7 @@ namespace ShereYourMovies.Classes
    
 
         private EntitySet<Elokuva> _elokuvat;
-        [Association(Storage = "_elokuvat", OtherKey = "UserID")]
+        [Association(Storage = "_elokuvat", OtherKey = "UserID", DeleteRule = "CASCADE")]
         public EntitySet<Elokuva> Elokuvat
         {
             get { return this._elokuvat; }

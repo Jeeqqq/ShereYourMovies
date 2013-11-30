@@ -21,7 +21,7 @@ namespace ShereYourMovies
         private void myIni()
         {
             YourMovies db = (YourMovies)Session["db"];
-            String username = (String)Session["UserAuthentication"];
+            String username = Context.User.Identity.Name;
 
             IQueryable<Elokuva> elokuva = ElokuvaController.getMoviesByUsers(username, ref db);
             lblDebug.InnerText = username;

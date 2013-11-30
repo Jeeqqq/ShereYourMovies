@@ -17,6 +17,7 @@ using System.IO;
 using System.Printing;
 using System.Configuration;
 using Elokuvatietue.Ikkunat;
+using System.Data.SqlClient;
 
 
 namespace Elokuvatietue
@@ -30,8 +31,8 @@ namespace Elokuvatietue
         List<MenuItem> esine;
         Asetukset newWAsetukset;
         string valittulista;
-        string filePath;
-
+        YourMovies db;
+        string username;
         public MainWindow()
         {
             InitializeComponent();
@@ -41,29 +42,50 @@ namespace Elokuvatietue
 
         public void myIni() 
         {
+            
+            string con = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            SqlConnection myConnection = new SqlConnection(con);
+            db = new YourMovies(myConnection);
             etsityt = new List<Elokuva>();
             movies = new ElokuvaLista();
             newWTiedot = new List<Lisatiedot>();
             esine = new List<MenuItem>();
-            int i = 0;
-            if (!Directory.Exists(@"Listat"))
-            {
-                Directory.CreateDirectory(@"Listat");
-            }
 
-            foreach (String item in Directory.EnumerateFiles(@"Listat", "*", SearchOption.AllDirectories).Select(System.IO.Path.GetFileNameWithoutExtension))
+            //ElokuvaController.initDatabase(ref db);
+            //UserController.RegisterUser("teppo", "salasana", ref db);
+
+            username = "teppo";
+
+
+
+            var leffat = ElokuvaController.getMoviesByUsers(username, ref db);
+
+            bool exist = false;
+            foreach (Elokuva leffa in leffat)
             {
-                esine.Add(new MenuItem());
-                esine[i].Header = item;
-                esine[i].Click += new RoutedEventHandler(MenuItemClick);
-                mnOmatelo.Items.Add(esine[i]);
-                i++;
+                MenuItem item=new MenuItem();
+                item.Header= leffa.Lista;
+                item.Click += new RoutedEventHandler(MenuItemClick);
+                foreach (MenuItem existingItem in esine)
+                {
+                    if (item.Header.Equals(existingItem.Header) && item.Header.ToString() != "")
+                    {
+                        exist = true;
+                    }
+                }
+                if (!exist)
+                {
+                    esine.Add(item);
+                    mnOmatelo.Items.Add(item);
+                }
+                exist = false;
+                
             }
             valittulista = Properties.Settings.Default.OletusListaNimi.ToString();
-            filePath = @"Listat/" + valittulista + ".xml";
-            if (File.Exists(filePath))
+            var oletusLeffat = ElokuvaController.getMoviesByListName(valittulista, username, ref db);
+            if (oletusLeffat != null)
             {
-                Serialisointi.DeSerialisoiXml(filePath, ref movies);
+                movies.Movies = oletusLeffat.ToList<Elokuva>();
             }
             else
             {
@@ -92,9 +114,11 @@ namespace Elokuvatietue
             if (mnOmatelo.Items.Count <= 0)
             {
                 mnOmatelo.IsEnabled = false;
+                PoistaLista.IsEnabled = false;
             }
             else
             {
+                PoistaLista.IsEnabled = true;
                 mnOmatelo.IsEnabled = true;
             }
 
@@ -123,35 +147,45 @@ namespace Elokuvatietue
 
             if (result.ToString() == "OK")
             {
-                DirectoryInfo di = new DirectoryInfo(dialog.SelectedPath);
-
-                IEnumerable<FileInfo> files = GetFilesByExtensions(di, ".mkv", ".avi", ".wmv", ".mp4");
-                foreach (FileInfo file in files)
-                {
-
-                    movies.Movies.Add(new Elokuva(file.Name, file.FullName));
-
-                }
 
                 //ilmoitus käyttäjälle
-                Echo(string.Format("Elokuvien etsintä päättynyt, anna uudelle listalle nimi!"));
+                Echo(string.Format("Anna listalle nimi!"));
                 ListaName uusiNimi = new ListaName();
                 uusiNimi.ShowDialog();
-
+                this.Cursor = Cursors.Wait;
+                Echo(string.Format("Etsitään videotiedostoja!"));
                 esine.Add(new MenuItem());
-                esine[esine.Count-1].Header = uusiNimi.Nimi;
-                esine[esine.Count-1].Click += new RoutedEventHandler(MenuItemClick);
-                mnOmatelo.Items.Add(esine[esine.Count-1]);
+                esine[esine.Count - 1].Header = uusiNimi.Nimi;
+                esine[esine.Count - 1].Click += new RoutedEventHandler(MenuItemClick);
+                mnOmatelo.Items.Add(esine[esine.Count - 1]);
                 valittulista = uusiNimi.Nimi;
 
-                paivitaDatagrid(movies.Movies);
-                this.SizeToContent = SizeToContent.WidthAndHeight;
+                etsiElokuvia(dialog.SelectedPath);
                 //ilmoitus käyttäjälle
                 Echo(string.Format("Elokuvat haettu kansiosta ja lisätty uuteen listaan nimeltä " + uusiNimi.Nimi));
             }
             this.Cursor = Cursors.Arrow;
         }
+        private void etsiElokuvia(string filepath)
+        {
+            DirectoryInfo di = new DirectoryInfo(filepath);
 
+            IEnumerable<FileInfo> files = GetFilesByExtensions(di, ".mkv", ".avi", ".wmv", ".mp4");
+            foreach (FileInfo file in files)
+            {
+
+                Elokuva eKuva = new Elokuva(file.Name, file.FullName);
+                eKuva.Lista = valittulista;
+                eKuva.UserName = username;
+                db.Elokuva.InsertOnSubmit(eKuva);
+                movies.Movies.Add(eKuva);
+
+            }
+
+            listatTyhjat();
+            paivitaDatagrid(movies.Movies);
+            this.SizeToContent = SizeToContent.WidthAndHeight;
+        }
         private void ElokuvatPoistaLista_Click_1(object sender, RoutedEventArgs e)
         {
             this.Cursor = Cursors.Wait;
@@ -170,9 +204,16 @@ namespace Elokuvatietue
                     {
                         dtGrid.ItemsSource = null;
                         mnOmatelo.Items.Remove(item);
-                        File.Delete(@"Listat\" + item.Header + ".xml");
+                        
+                        foreach (Elokuva l in movies.Movies)
+                        {
+                            db.Movie.DeleteOnSubmit(l.DbTiedot);
+                        }
+                        db.Elokuva.DeleteAllOnSubmit(movies.Movies);
+                        db.SubmitChanges();
                     }
                 }
+                listatTyhjat();
                 this.SizeToContent = SizeToContent.WidthAndHeight;
                 //ilmoitus käyttäjälle
                 Echo(string.Format("Valittu lista poistettiin onnistuneesti!"));
@@ -185,7 +226,11 @@ namespace Elokuvatietue
         }
         private void ElokuvatTallennaLista_Click_1(object sender, RoutedEventArgs e)
         {
-            Serialisointi.SerialisoiXml(@"Listat\" + valittulista + ".xml", movies);
+            //Serialisointi.SerialisoiXml(@"Listat\" + valittulista + ".xml", movies);
+            
+            
+            db.SubmitChanges();
+            
             MessageBox.Show("Tallentaminen onnistui", "Onnistu!", MessageBoxButton.OK, MessageBoxImage.Information);
             //ilmoitus käyttäjälle
             Echo(string.Format("Elokuvalista tallennettu onnistuneesti!"));
@@ -203,17 +248,7 @@ namespace Elokuvatietue
 
             if (result.ToString() == "OK")
             {
-                DirectoryInfo di = new DirectoryInfo(dialog.SelectedPath);
-
-                IEnumerable<FileInfo> files =GetFilesByExtensions(di,".mkv",".avi",".wmv",".mp4",".mpeg");
-                    //di.GetFiles("*", SearchOption.AllDirectories);
-                foreach (FileInfo file in files)
-                {
-                    
-                    movies.Movies.Add(new Elokuva(file.Name, file.FullName));
-
-                }
-                paivitaDatagrid(movies.Movies);
+                etsiElokuvia(dialog.SelectedPath);
                 //ilmoitus käyttäjälle
                 Echo(string.Format("Elokuvat haettu kansiosta ja lisätty nykyiseen listaan!"));
             }
@@ -266,7 +301,7 @@ namespace Elokuvatietue
 
         private void MenuAsetukset_Click_1(object sender, RoutedEventArgs e)
         {
-            newWAsetukset = new Asetukset();
+            newWAsetukset = new Asetukset(username, ref db);
 
             foreach (Lisatiedot item in newWTiedot)
             {
@@ -277,11 +312,12 @@ namespace Elokuvatietue
 
             newWAsetukset.ShowDialog();
             movies.Movies.Clear();
+           
             valittulista = Properties.Settings.Default.OletusListaNimi.ToString();
-            string filePath = @"Listat/" + valittulista + ".xml";
-            if (File.Exists(filePath))
+            var OletusLista = ElokuvaController.getMoviesByListName(valittulista, username, ref db);
+            if (OletusLista != null)
             {
-                Serialisointi.DeSerialisoiXml(filePath, ref movies);
+                movies.Movies = OletusLista.ToList<Elokuva>();
             }
             else
             {
@@ -313,7 +349,7 @@ namespace Elokuvatietue
         {
             MenuItem item = (MenuItem)sender;
             valittulista = item.Header.ToString();
-            Serialisointi.DeSerialisoiXml("Listat/" + item.Header + ".xml", ref movies);
+            movies.Movies = ElokuvaController.getMoviesByListName(valittulista, username, ref db).ToList<Elokuva>();
 
             paivitaDatagrid(movies.Movies);
             dtGrid.Columns[1].Width = new DataGridLength(0, DataGridLengthUnitType.SizeToCells);
@@ -420,6 +456,8 @@ namespace Elokuvatietue
           int index=  dtGrid.SelectedIndex;
           if (index > -1 && index != movies.Movies.Count)
           {
+              db.Movie.DeleteOnSubmit(movies.Movies.ElementAt(index).DbTiedot);
+              db.Elokuva.DeleteOnSubmit(movies.Movies.ElementAt(index));
               movies.Movies.RemoveAt(index);
               paivitaDatagrid(movies.Movies);
               //ilmoitus käyttäjälle

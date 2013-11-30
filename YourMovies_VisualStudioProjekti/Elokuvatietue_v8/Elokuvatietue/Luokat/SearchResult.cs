@@ -1,6 +1,8 @@
 ﻿using Elokuvatietue;
 using System;
 using System.Collections.Generic;
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -18,46 +20,58 @@ namespace ImdbApi
         {
             leffa = new Movie();
         }
-        [XmlElement("movie")]
+        [XmlElement("Movie")]
         public Movie leffa { get; set; }
     }
-    [Serializable()]
+    
+    [Table(Name = "Movie")]
     public class Movie
     {
-        [XmlAttribute("title")]
+        private int _movieID;
+
+        [Column(DbType = "BigInt IDENTITY NOT NULL", IsPrimaryKey = true, IsDbGenerated = true)]
+        public int MovieID
+        {
+            set { _movieID = value; }
+            get{return _movieID;}
+        }
+
+       
+        [Column]
         public string Title { get; set; }
-        [XmlAttribute("year")]
+       [Column]
         public string Year { get; set; }
-        [XmlAttribute("rated")]
+        [Column]
         public string Rated { get; set; }
-        [XmlAttribute("released")]
+        [Column]
         public string Released { get; set; }
-        [XmlAttribute("runtime")]
+        [Column]
         public string Runtime { get; set; }
-        [XmlAttribute("genre")]
+        [Column]
         public string Genre { get; set; }
-        [XmlAttribute("director")]
+        [Column]
         public string Director { get; set; }
-        [XmlAttribute("Writer")]
+        [Column]
         public string Writer { get; set; }
-        [XmlAttribute("actors")]
+        [Column]
         public string Actors { get; set; }
-        [XmlAttribute("plot")]
+        [Column]
         public string Plot { get; set; }
-        [XmlAttribute("poster")]
+        [Column]
         public string Poster { get; set; }
-        [XmlAttribute("imdbRating")]
+        [Column]
         public string ImdbRating { get; set; }
-        [XmlAttribute("imdbVotes")]
+        [Column]
         public string ImdbVotes { get; set; }
-        [XmlAttribute("imdbID")]
+        [Column]
         public string ImdbID { get; set; }
-        [XmlAttribute("type")]
+        [Column]
         public string Type { get; set; }
 
         public Movie()
         {
 
+           
         }
     }
     #endregion
@@ -84,7 +98,7 @@ namespace ImdbApi
         public int Year { get; set; }
         [XmlAttribute("Type")]
         public string Type { get; set; }
-        [XmlAttribute("imdbID")]
+     [XmlAttribute("imdbID")]
         public string ImdbID { get; set; }
 
         public SearchResult()
@@ -103,51 +117,22 @@ namespace ImdbApi
     #region etsinnän serialisointi
     public class Search
     {
-        public static void DeSerialisoiSearch( string nimi, ref Result leffat)
+        public static void DeSerialisoiSearch(string nimi, ref Result leffat)
         {
-            string url = "http://www.omdbapi.com/?s="+nimi+"&r=xml" ;
+            string url = "http://www.omdbapi.com/?s=" + nimi + "&r=xml";
             XmlSerializer deserializer = new XmlSerializer(typeof(Result));
-            try
-            {
-                 HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
-                 myRequest.AllowAutoRedirect = true;
-                 myRequest.Method = "GET";
-                 myRequest.Timeout = 6000;
-                 WebResponse myResponse = myRequest.GetResponse();
-
-
-                 XmlTextReader reader = new XmlTextReader(myResponse.GetResponseStream());
-                 
-                  leffat = (Result)deserializer.Deserialize(reader);
-                  reader.Close();
-                  myResponse.Close(); 
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                
-            }
-
-        }
-        public static void DeSerialisoiIdSeach(string imdbID, ref Root leffat)
-        {
-            string url = "http://www.omdbapi.com/?i=" + imdbID + "&r=xml&plot=full";
-            XmlSerializer deserializer = new XmlSerializer(typeof(Root));
             try
             {
                 HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
                 myRequest.AllowAutoRedirect = true;
                 myRequest.Method = "GET";
-                myRequest.Timeout = 6000;
+                myRequest.Timeout = 10000;
                 WebResponse myResponse = myRequest.GetResponse();
 
 
                 XmlTextReader reader = new XmlTextReader(myResponse.GetResponseStream());
 
-                leffat = (Root)deserializer.Deserialize(reader);
+                leffat = (Result)deserializer.Deserialize(reader);
                 reader.Close();
                 myResponse.Close();
             }
@@ -161,10 +146,95 @@ namespace ImdbApi
             }
 
         }
+        public static void DeSerialisoiIdSeach(string imdbID,ref Movie movie)
+        {
+            string url = "http://www.omdbapi.com/?i=" + imdbID + "&r=xml&plot=full";
+            
+            try
+            {
+                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
+                myRequest.AllowAutoRedirect = true;
+                myRequest.Method = "GET";
+                myRequest.Timeout = 6000;
+                WebResponse myResponse = myRequest.GetResponse();
 
-        public static Movie getMovieInfoFromDb(string Nimi)
+
+                XmlTextReader reader = new XmlTextReader(myResponse.GetResponseStream());
+
+                Search.dezirialiseXML(ref reader, ref movie);
+                reader.Close();
+                myResponse.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+
+            }
+            
+        }
+        public static void dezirialiseXML(ref XmlTextReader reader, ref Movie movie)
         {
 
+            XmlDocument doc = new XmlDocument();
+            doc.Load(reader);
+            XmlNode node = doc.SelectSingleNode("//movie");
+            foreach (XmlAttribute att in node.Attributes)
+            {
+                switch (att.Name)
+                {
+                    case "title":
+                        movie.Title = att.Value;
+                        break;
+                    case "year":
+                        movie.Year = att.Value;
+                        break;
+                    case "rated":
+                        movie.Rated = att.Value;
+                        break;
+                    case "runtime":
+                        movie.Runtime = att.Value;
+                        break;
+                    case "genre":
+                        movie.Genre = att.Value;
+                        break;
+                    case "director":
+                        movie.Director = att.Value;
+                        break;
+                    case "writer":
+                        movie.Writer = att.Value;
+                        break;
+                    case "actors":
+                        movie.Actors = att.Value;
+                        break;
+                    case "poster":
+                        movie.Poster = att.Value;
+                        break;
+                    case "plot":
+                        movie.Plot = att.Value;
+                        break;
+                    case "imdbRating":
+                        movie.ImdbRating = att.Value;
+                        break;
+                    case "imdbVotes":
+                        movie.ImdbVotes = att.Value;
+                        break;
+                    case "imdbID":
+                        movie.ImdbID = att.Value;
+                        break;
+                    case "type":
+                        movie.Type = att.Value;
+                        break;
+                }
+
+            }
+
+        }
+        public static Movie getMovieInfoFromDb(string Nimi)
+        {
+            Movie movie = new Movie();
             string url = "http://www.omdbapi.com/?t=" + Nimi + "&r=xml&plot=full";
             try
             {
@@ -176,37 +246,37 @@ namespace ImdbApi
 
 
                 XmlTextReader reader = new XmlTextReader(myResponse.GetResponseStream());
-                XmlSerializer deserializer = new XmlSerializer(typeof(Root));
-                Root leffa = (Root)deserializer.Deserialize(reader);
+                Search.dezirialiseXML(ref reader, ref movie);
                 reader.Close();
                 myResponse.Close();
 
-                if (leffa.leffa.Title == null)
+                if (movie.Title == null)
                 {
                     Exception e = new Exception("Elokuvan tietoja ei löytynyt");
                     throw e;
                 }
-                return leffa.leffa;
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-              Movie  DbTiedot = new Movie();
-                DbTiedot.Actors = "Tietoja ei löytynyt";
-                DbTiedot.Director = "Tietoja ei löytynyt";
-                DbTiedot.Genre = "Tietoja ei löytynyt";
-                DbTiedot.Title = "Tietoja ei löytynyt";
-                DbTiedot.Plot = "Tietoja ei löytynyt";
-                DbTiedot.ImdbID = "Tietoja ei löytynyt";
-                DbTiedot.ImdbRating = "Tietoja ei löytynyt";
-                DbTiedot.Rated = "Tietoja ei löytynyt";
 
-                 return DbTiedot;
+                movie.Actors = "Tietoja ei löytynyt";
+                movie.Director = "Tietoja ei löytynyt";
+                movie.Genre = "Tietoja ei löytynyt";
+                movie.Title = "Tietoja ei löytynyt";
+                movie.Plot = "Tietoja ei löytynyt";
+                movie.ImdbID = "Tietoja ei löytynyt";
+                movie.ImdbRating = "Tietoja ei löytynyt";
+                movie.Rated = "Tietoja ei löytynyt";
+
+
+
             }
-
+            return movie;
         }
     }
 
-#endregion
+    #endregion
 
 
 }
