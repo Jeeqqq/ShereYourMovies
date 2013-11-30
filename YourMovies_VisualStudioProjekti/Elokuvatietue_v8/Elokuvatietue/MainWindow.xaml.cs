@@ -469,7 +469,50 @@ namespace Elokuvatietue
         {
             stbViestit.Text = msg;
         }
- #endregion
-        
+
+
+        private void tuoLista_Click(object sender, RoutedEventArgs e)
+        {
+            this.Cursor = Cursors.Wait;
+            //ilmoitus käyttäjälle
+            Echo(string.Format("Valitse tuotava xml tiedosto!"));
+            dtGrid.ItemsSource = null;
+            movies.Movies.Clear();
+
+            System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
+            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+
+            if (result.ToString() == "OK")
+            {
+
+                string filepath = dialog.FileName;
+                valittulista = dialog.SafeFileName;
+                this.Cursor = Cursors.Wait;
+
+                try{
+                Serialisointi.DeSerialisoiXml(filepath, ref movies,valittulista,username);
+                esine.Add(new MenuItem());
+                esine[esine.Count - 1].Header = valittulista;
+                esine[esine.Count - 1].Click += new RoutedEventHandler(MenuItemClick);
+                mnOmatelo.Items.Add(esine[esine.Count - 1]);
+                db.Elokuva.InsertAllOnSubmit(movies.Movies);
+                paivitaDatagrid(movies.Movies);
+                //ilmoitus käyttäjälle
+                Echo(string.Format("Lista lisätty onnistuneesti"));
+                }
+                catch(Exception ex)
+                {
+                    //ilmoitus käyttäjälle
+                    Echo(string.Format("Tapahtui virhe"));
+                }
+               
+                
+
+               
+                
+            }
+            this.Cursor = Cursors.Arrow;
+        }
+        #endregion
     }
 }

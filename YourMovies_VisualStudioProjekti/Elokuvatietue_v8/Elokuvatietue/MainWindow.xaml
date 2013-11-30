@@ -62,6 +62,11 @@
                                 <ToolTip Content="Omat listat"/>
                             </MenuItem.ToolTip>
                         </MenuItem>
+                        <MenuItem x:Name="tuoLista" Header="Tuo xml lista" Click="tuoLista_Click">
+                            <MenuItem.ToolTip>
+                                <ToolTip Content="Tuo xml tiedosto, joka viedään tietokantaan"/>
+                            </MenuItem.ToolTip>
+                        </MenuItem>
                         <Separator/>
                         <MenuItem x:Name="PoistaLista" Header="Poista lista" Click="ElokuvatPoistaLista_Click_1">
                             <MenuItem.ToolTip>
