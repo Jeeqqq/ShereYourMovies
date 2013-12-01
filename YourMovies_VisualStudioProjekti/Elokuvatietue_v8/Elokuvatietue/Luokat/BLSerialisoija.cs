@@ -34,7 +34,7 @@ namespace Elokuvatietue
         }
         public static void DeSerialisoiXml(string filePath, ref ElokuvaLista leffat,string lista,string username)
         {
-            XmlSerializer deserializer = new XmlSerializer(typeof(ElokuvaLista));
+            
             try
             {
                 
