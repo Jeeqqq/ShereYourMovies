@@ -2,8 +2,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="FeaturedContent" runat="server">
-    <label id="lblDebug" runat="server"></label>
-    <h1 id="husername" runat="server"></h1>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
     <asp:GridView ID="grdElokuvat" runat="server"
@@ -43,12 +41,20 @@
         </Columns>
     </asp:GridView>
 
-
-    <asp:ListView ID="ListView1" runat="server" >
+       <asp:DataPager ID="DataPagerMovies" runat="server" PagedControlID="ListView1" PageSize="6" >
+    <Fields>
+        <asp:NextPreviousPagerField ShowFirstPageButton="True" ShowNextPageButton="False" />
+        <asp:NumericPagerField />
+        <asp:NextPreviousPagerField ShowLastPageButton="True" ShowPreviousPageButton="False" />
+    </Fields>
+</asp:DataPager>
+    <asp:ListView ID="ListView1" runat="server" OnPagePropertiesChanging="ListView1_PagePropertiesChanging" >
         
         <LayoutTemplate>
+
             <div runat="server" id="ShowMovies" >
-           <div runat="server" id="itemPlaceholder" />
+                <div runat="server" id="itemPlaceholder" />
+               
           </div>
         </LayoutTemplate>
          <ItemTemplate>
@@ -107,71 +113,243 @@
         </ItemTemplate>
             
     </asp:ListView>
-    <asp:ListView ID="ListView2" runat="server" >
+    <asp:ListView ID="ListView2" runat="server" OnItemUpdated="ListView2_ItemUpdated" OnItemUpdating="ListView2_ItemUpdating" OnItemCommand="ListView2_ItemCommand" OnItemEditing="ListView2_ItemEditing" ViewStateMode="Enabled">
         
         <LayoutTemplate>
             <div runat="server" id="ShowMovies" >
-           <div runat="server" id="itemPlaceholder" />
+                <asp:LinkButton runat="server" ID="btnBack" OnCommand="btnBack_Command" >Takaisin</asp:LinkButton>
+           
+           <div runat="server" id="itemPlaceholder" /> 
           </div>
         </LayoutTemplate>
          <ItemTemplate>
              
-          <div id="div1" runat="server" class="moviesList">
-              
-            <asp:Panel ID="myPanel" runat="server" BackColor="WhiteSmoke" BorderWidth="1" ToolTip=<%#Eval("Tooltip") %> >
-                <h4><asp:Label ID="Label1" ToolTip=<%#Eval("Nimi") %> runat="server" ><%#Eval("Nimi") %></asp:Label> </h4>
+          <div id="div1" runat="server" class="oneMovie">
+              <asp:Panel  ID="formElements"  runat="server">
+                  <h2><asp:Label ID="Label1" ToolTip=<%#Eval("Nimi") %> runat="server" ><%#Eval("Nimi") %></asp:Label> </h2>
                 
-                  <table>
+                  <table class="float-left">
+                      <tr>
+                        <td></td>
+                        <th colspan="2" style="text-align:center">Elokuvan tiedot</th>
+                        </tr>
                    <tr>
-                        <td rowspan="9" ><asp:ImageButton runat="server" ID="Image1" BorderWidth="1" CommandArgument='<%#Eval("ELokuvaID") %>' CommandName="Select"  CssClass="listImage" ImageUrl='<%#Eval("DbTiedot.Poster") %>' /></td>
+                        <td rowspan="14" ><asp:Image runat="server" ID="Image1" BorderWidth="1"  ImageUrl='<%#Eval("DbTiedot.Poster") %>' /></td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>Nimi : </td>
-                        <td><asp:Label ID="Label2" ToolTip=<%#Eval("DbTiedot.Title") %> runat="server" ><%#Eval("DbTiedot.Title") %></asp:Label> </td>
+                        <td><asp:TextBox ID="txtNimi" runat="server" BorderWidth="0" BackColor="Transparent" Enabled="false" Text='<%#Bind("DbTiedot.Title") %>'  ToolTip='<%#Eval("DbTiedot.Title") %>' /></td>
                     </tr> 
                     <tr>
                         <td></td>
                         <td>Oma Arvosana : </td>
-                        <td><%#Eval("Arvosana") %></td>
+                        <td><asp:TextBox runat="server" ID="txtArvosana" BorderWidth="0" BackColor="Transparent" Enabled="false" Text='<%#Bind("Arvosana") %>' /></td>
                     </tr>  
                      <tr>
                         <td></td>
                         <td>Imdb Arvosana : </td>
-                        <td><%#Eval("DbTiedot.ImdbRating") %> / 10</td>
+                        <td><asp:TextBox runat="server" ID="txtArvosana2" BorderWidth="0" BackColor="Transparent" Enabled="false" Text='<%#Bind("DbTiedot.ImdbRating") %>' /></td>
                     </tr>    
                      <tr>
                         <td></td>
                         <td>Lista : </td>
-                        <td><%#Eval("Lista") %></td>
-                    </tr>  
-                     <tr>
+                        <td><asp:TextBox runat="server" ID="txtLista" BorderWidth="0" BackColor="Transparent" Enabled="false" Text='<%#Bind("Lista") %>' /></td>
+                    </tr> 
+                      <tr>
                         <td></td>
-                        <td>Pituus : </td>
-                        <td><%#Eval("Pituus") %></td>
+                        <td>Ikäraja : </td>
+                        <td><asp:TextBox runat="server"  ID="txtIkäraja" BorderWidth="0" BackColor="Transparent" Enabled="false" Text='<%#Bind("DbTiedot.Rated") %>' /></td>
+                    </tr>  
+                      <tr>
+                        <td></td>
+                        <td>Genret : </td>
+                        <td><asp:TextBox runat="server" ID="txtGenre" BorderWidth="0" BackColor="Transparent" Enabled="false" Text='<%#Bind("DbTiedot.Genre") %>' /></td>
                     </tr>
+                      <tr>
+                        <td></td>
+                        <td>Ohjaaja(t) : </td>
+                        <td><asp:TextBox runat="server" ID="txtOhjaaja" BorderWidth="0" BackColor="Transparent" Enabled="false" Text='<%#Bind("DbTiedot.Director") %>' /></td>
+                    </tr>
+                      <tr>
+                        <td></td>
+                        <td>Käsikirjoittaja(t) : </td>
+                        <td><asp:TextBox runat="server" ID="txtKasikirjoittaja" BorderWidth="0" BackColor="Transparent" Enabled="false" Text='<%#Bind("DbTiedot.Director") %>' /></td>
+                    </tr>
+                      <tr>
+                        <td></td>
+                        <td>Näyttelijät : </td>
+                        <td><asp:TextBox runat="server" ID="txtNayttelija" Wrap="true" BorderWidth="0" BackColor="Transparent" Enabled="false" Text='<%#Bind("DbTiedot.Actors") %>' /></td>
+                    </tr>
+                       <tr>
+                        <td></td>
+                        <td>Tyyppi : </td>
+                        <td><asp:TextBox runat="server" ID="txtTyyppii" BorderWidth="0" BackColor="Transparent" Enabled="false" Text='<%#Bind("DbTiedot.Type") %>' /></td>
+                    </tr> 
+                      <tr>
+                        <td></td>
+                        <td>Julkaisuvuosi : </td>
+                        <td><asp:TextBox runat="server" ID="txtYear" BorderWidth="0" BackColor="Transparent" Enabled="false" Text='<%#Bind("DbTiedot.Year") %>'/></td>
+                    </tr>        
                       <tr>
                         <td></td>
                         <td>Linkki Imdb:seen : </td>
                         <td><a href='<%#Eval("ImbdLinkki") %>' target="_blank" />Imdb</<a></td>
                     </tr>  
-                   <tr>
-                        <td></td>
-                        <td>Julkaisuvuosi : </td>
-                        <td><%#Eval("DbTiedot.Year") %></td>
-                    </tr>      
-                      <tr>
-                        <td></td>
-                        <td>Takaisin : </td>
-                        <td><asp:LinkButton runat="server" ID="btnBack" OnCommand="btnBack_Command" >Takaisin</asp:LinkButton> </td>
-                    </tr>                    
+                                        
                 </table>
-              </asp:Panel>
-             
+                
+                
+                  <table class="float-left">
+                      <tr>
+                        <th colspan="2">Tiedoston tiedot</th>
+                        </tr>
+                    <tr>
+                       
+                        <td>Pituus : </td>
+                        <td><asp:TextBox runat="server"  BorderWidth="0" BackColor="Transparent" Enabled="false" Text='<%#Eval("Pituus") %>' /></td>
+                    </tr> 
+                    <tr>
+                        
+                        <td>Video : </td>
+                        <td><asp:TextBox runat="server"  BorderWidth="0" BackColor="Transparent" Enabled="false" Text='<%#Eval("GetVideoInfo") %>' /></td>
+                    </tr>  
+                     <tr>
+                        
+                        <td>Ääni : </td>
+                        <td><asp:TextBox runat="server"  BorderWidth="0" BackColor="Transparent"  Enabled="false" Text='<%#Eval("SoundEncoding") %>' /></td>
+                    </tr>    
+                     <tr>
+                        
+                        <td>Katsottu : </td>
+                        <td><asp:CheckBox runat="server" Checked='<%#Eval("Watched") %>' Enabled="False" /> </td>
+                    </tr>                     
+                </table> 
+              
+             </asp:Panel> 
+               <div class="clear-fix"></div>
+              <div id="ToolBar" class="float-left" runat="server">
+                  <asp:LinkButton runat="server" ID="btnEdit" CommandName="Edit">Muokkaa</asp:LinkButton>
+                  <asp:LinkButton runat="server" ID="btnEtsi" OnCommand="btnEtsi_Command" >Etsi</asp:LinkButton>
+              </div>      
           </div>
                 
         </ItemTemplate>
-            
+         <EditItemTemplate>
+                  
+          <div id="div1" runat="server" class="oneMovie">
+              <asp:Panel  ID="formElements"  runat="server">
+                  <h2><asp:Label ID="Label1" ToolTip=<%#Eval("Nimi") %> runat="server" ><%#Eval("Nimi") %></asp:Label> </h2>
+                
+                  <table class="float-left">
+                      <tr>
+                        <td></td>
+                        <th colspan="2" style="text-align:center">Elokuvan tiedot</th>
+                        </tr>
+                   <tr>
+                        <td rowspan="14" ><asp:Image runat="server" ID="Image1" BorderWidth="1"  ImageUrl='<%#Eval("DbTiedot.Poster") %>' /></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Nimi : </td>
+                        <td><asp:TextBox ID="txtNimi" runat="server" BorderWidth="0" BackColor="WhiteSmoke"  Text='<%#Bind("DbTiedot.Title") %>'  ToolTip='<%#Eval("DbTiedot.Title") %>' /></td>
+                    </tr> 
+                    <tr>
+                        <td></td>
+                        <td>Oma Arvosana : </td>
+                        <td><asp:TextBox runat="server" ID="txtArvosana" BorderWidth="0" BackColor="WhiteSmoke"  Text='<%#Bind("Arvosana") %>' /></td>
+                    </tr>  
+                     <tr>
+                        <td></td>
+                        <td>Imdb Arvosana : </td>
+                        <td><asp:TextBox runat="server" ID="txtArvosana2" BorderWidth="0" BackColor="WhiteSmoke"  Text='<%#Bind("DbTiedot.ImdbRating") %>' /></td>
+                    </tr>    
+                     <tr>
+                        <td></td>
+                        <td>Lista : </td>
+                        <td><asp:TextBox runat="server" ID="txtLista" BorderWidth="0" BackColor="WhiteSmoke"  Text='<%#Bind("Lista") %>' /></td>
+                    </tr> 
+                      <tr>
+                        <td></td>
+                        <td>Ikäraja : </td>
+                        <td><asp:TextBox runat="server"  ID="txtIkäraja" BorderWidth="0" BackColor="WhiteSmoke"  Text='<%#Bind("DbTiedot.Rated") %>' /></td>
+                    </tr>  
+                      <tr>
+                        <td></td>
+                        <td>Genret : </td>
+                        <td><asp:TextBox runat="server" ID="txtGenre" BorderWidth="0" BackColor="WhiteSmoke"  Text='<%#Bind("DbTiedot.Genre") %>' /></td>
+                    </tr>
+                      <tr>
+                        <td></td>
+                        <td>Ohjaaja(t) : </td>
+                        <td><asp:TextBox runat="server" ID="txtOhjaaja" BorderWidth="0" BackColor="WhiteSmoke"  Text='<%#Bind("DbTiedot.Director") %>' /></td>
+                    </tr>
+                      <tr>
+                        <td></td>
+                        <td>Käsikirjoittaja(t) : </td>
+                        <td><asp:TextBox runat="server" ID="txtKasikirjoittaja" BorderWidth="0" BackColor="WhiteSmoke"  Text='<%#Bind("DbTiedot.Director") %>' /></td>
+                    </tr>
+                      <tr>
+                        <td></td>
+                        <td>Näyttelijät : </td>
+                        <td><asp:TextBox runat="server" ID="txtNayttelija" Wrap="true" BorderWidth="0" BackColor="WhiteSmoke"  Text='<%#Bind("DbTiedot.Actors") %>' /></td>
+                    </tr>
+                       <tr>
+                        <td></td>
+                        <td>Tyyppi : </td>
+                        <td><asp:TextBox runat="server" ID="txtTyyppii" BorderWidth="0" BackColor="WhiteSmoke"  Text='<%#Bind("DbTiedot.Type") %>' /></td>
+                    </tr> 
+                      <tr>
+                        <td></td>
+                        <td>Julkaisuvuosi : </td>
+                        <td><asp:TextBox runat="server" ID="txtYear" BorderWidth="0" BackColor="WhiteSmoke"  Text='<%#Bind("DbTiedot.Year") %>'/></td>
+                    </tr>        
+                      <tr>
+                        <td></td>
+                        <td>Linkki Imdb:seen : </td>
+                        <td><a href='<%#Eval("ImbdLinkki") %>' target="_blank" />Imdb</<a></td>
+                    </tr>  
+                                        
+                </table>
+                
+                
+                  <table class="float-left">
+                      <tr>
+                        <th colspan="2">Tiedoston tiedot</th>
+                        </tr>
+                    <tr>
+                       
+                        <td>Pituus : </td>
+                        <td><asp:TextBox ID="TextBox1" runat="server"  BorderWidth="0" BackColor="WhiteSmoke" Enabled="false" Text='<%#Eval("Pituus") %>' /></td>
+                    </tr> 
+                    <tr>
+                        
+                        <td>Video : </td>
+                        <td><asp:TextBox ID="TextBox2" runat="server"  BorderWidth="0" BackColor="WhiteSmoke" Enabled="false" Text='<%#Eval("GetVideoInfo") %>' /></td>
+                    </tr>  
+                     <tr>
+                        
+                        <td>Ääni : </td>
+                        <td><asp:TextBox ID="TextBox3" runat="server"  BorderWidth="0" BackColor="WhiteSmoke"  Enabled="false" Text='<%#Eval("SoundEncoding") %>' /></td>
+                    </tr>    
+                     <tr>
+                        
+                        <td>Katsottu : </td>
+                        <td><asp:CheckBox ID="CheckBox1" runat="server" Checked='<%#Eval("Watched") %>' Enabled="False" /> </td>
+                    </tr>                     
+                </table> 
+              
+             </asp:Panel>   
+                 <div class="clear-fix"></div>
+              <div id="ToolBar" class="float-left" runat="server">
+                  <asp:LinkButton runat="server" ID="btnCancel" CommandName="Cancel">Peruuta</asp:LinkButton>
+                  <asp:LinkButton runat="server" ID="btnEtsi" OnCommand="btnEtsi_Command" >Etsi</asp:LinkButton>
+                  <asp:LinkButton runat="server" ID="btnTallenna" CommandName="Update" >Tallenna</asp:LinkButton>
+           
+
+              </div>
+          </div>
+         </EditItemTemplate>   
     </asp:ListView>
     
 </asp:Content>

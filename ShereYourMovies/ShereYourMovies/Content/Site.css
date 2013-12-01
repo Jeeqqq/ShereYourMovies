@@ -796,7 +796,7 @@ tr.pager td {
 }
 .moviesList table {
     width:500px;
-      text-overflow: ellipsis;
+    text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
 }
