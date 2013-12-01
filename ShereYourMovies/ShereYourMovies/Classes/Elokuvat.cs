@@ -13,8 +13,6 @@ using ImdbApi;
 
 namespace ShereYourMovies.Classes
 {
-
-
     #region Elokuva luokka
     [Table(Name = "Elokuva")]
     public class Elokuva
@@ -30,13 +28,8 @@ namespace ShereYourMovies.Classes
         [Column(DbType = "BigInt IDENTITY NOT NULL", IsPrimaryKey = true, IsDbGenerated = true)]
         public int ElokuvaID
         {
-            set
-            {
-                _elokuvaID = value;
-                // NotifyPropertyChanged();
-            }
+            set{    _elokuvaID = value;}
             get { return _elokuvaID; }
-
         }
 
         //elokuvia voidaan lisätä eri listoihin, tämä muuttuja pitää listan nimen sisällään.
@@ -83,7 +76,7 @@ namespace ShereYourMovies.Classes
             set { movieId = value; }
         }
 
-
+ 
         #endregion
 
 
@@ -107,14 +100,41 @@ namespace ShereYourMovies.Classes
 
         }
         #endregion
-        #region videoinfot
-        public string GetVideoInfo
+ #region videoinfot
+        public string Tooltip
         {
-
-            get { return Resolution + " at " + Fps + ", " + VideoEncoding; }
+            get{
+                return "Juoni : \n" + DbTiedot.Plot;
+            }
         }
+        public string ImbdLinkki
+        {
+            get {
+                if (DbTiedot.ImdbID == "Tietoja ei löytynyt" || DbTiedot.ImdbID == null)
+                {
+                    return "http://www.imdb.com/";
+                }
+                else return "http://www.imdb.com/title/" + DbTiedot.ImdbID; }
+        }
+        public string Arvosana
+        {
+            get
+            {
+                return Tahdet+" / 5";
+            }
+        }
+         public override string ToString()
+         {
+             return Nimi+", Tähdet: "+Tahdet;
+         }
+        
+         public string GetVideoInfo
+         {
 
-        #endregion
+            get {  return Resolution + " at " + Fps + ", " + VideoEncoding; }
+         }
+
+
 
         private string TrimNimi(string nimi)
         {
@@ -140,5 +160,6 @@ namespace ShereYourMovies.Classes
 
 
     }
+    #endregion
     #endregion
 }

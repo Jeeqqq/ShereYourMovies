@@ -43,8 +43,21 @@ namespace ShereYourMovies.Classes
         public string Actors { get; set; }
         [Column]
         public string Plot { get; set; }
+
+        private string _poster;
         [Column]
-        public string Poster { get; set; }
+        public string Poster { get{return _poster;}
+            set
+            {
+                if (value == "tietoja ei löytynyt" || value == null)
+                {
+                    _poster="~/Images/No-Photo-Available.jpg";
+                }
+                else{
+                    _poster=value;
+                }
+            } 
+        }
         [Column]
         public string ImdbRating { get; set; }
         [Column]

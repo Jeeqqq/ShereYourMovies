@@ -773,3 +773,43 @@ tr.pager td {
         }
 }
 /* END: Mobile Styles */
+/* Elokuvien listaus
+----------------------------------------------------------*/
+
+.moviesList 
+{
+    float:left;
+    display:block;
+    padding:10px;
+    width:600px;
+    max-width:600px;
+
+  
+}
+.moviesList h4 {
+    padding-left:10px;
+    padding-right:10px;
+     width:400px;
+      text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.moviesList table {
+    width:500px;
+      text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.moviesList td {
+     width:100px;
+     max-width:200px;
+      text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.listImage {
+    padding:0px;
+   margin:10px;
+   width:200px;
+    height:300px;
+}

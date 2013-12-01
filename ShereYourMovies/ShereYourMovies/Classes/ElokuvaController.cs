@@ -8,11 +8,10 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Configuration;
-using MySql.Data.MySqlClient;
 
 namespace ShereYourMovies.Classes
 {
-
+  
     public class ElokuvaController
     {
 
@@ -20,7 +19,7 @@ namespace ShereYourMovies.Classes
         public static void initDatabase(ref YourMovies db)
         {
 
-            if (db.DatabaseExists())
+	 if (db.DatabaseExists())
             {
                 db.DeleteDatabase();
                 db.CreateDatabase();
@@ -90,8 +89,90 @@ namespace ShereYourMovies.Classes
                 return listat;
             }
         }
+        #region Querys
+        public static bool insertElokuva(Elokuva elokuva, ref YourMovies db)
+        {
+            try
+            {
+                db.Elokuva.InsertOnSubmit(elokuva);
+                db.SubmitChanges();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message.ToString());
+                return false;
+            }
+            
+        }
+
+        public static bool updateElokuva(Elokuva elokuva, ref YourMovies db)
+        {
+            try
+            {
+                var q = (from Elokuva in db.Elokuva
+                         where Elokuva.ElokuvaID == elokuva.ElokuvaID
+                        select Elokuva).First();
+
+                q = elokuva;
+
+                db.SubmitChanges();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message.ToString());
+                return false;
+            }
+
+        }
 
 
+        public static bool deleteElokuva(Elokuva elokuva, ref YourMovies db)
+        {
+            try
+            {
+                db.Elokuva.DeleteOnSubmit(elokuva);
+                db.SubmitChanges();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message.ToString());
+                return false;
+            }
+        }
+        #endregion
+
+        public static List<Elokuva> sortList(List<Elokuva> elokuvat, string GridViewSortExpression, string SortDirection) 
+        {
+            if (elokuvat != null)
+            {
+                if (GridViewSortExpression != string.Empty)
+                {
+                    if (SortDirection == "ASC")
+                    {
+                        elokuvat = elokuvat.OrderBy
+                            (a => a.GetType().GetProperty(GridViewSortExpression)
+                                .GetValue(a, null)).ToList();
+                    }
+                    else
+                    {
+                        elokuvat = elokuvat.OrderByDescending
+                            (a => a.GetType().GetProperty(GridViewSortExpression)
+                                .GetValue(a, null)).ToList();
+                    }
+                }
+                return elokuvat;
+            }
+            else
+            {
+                return elokuvat;
+            }
+        }
 
     }
 }

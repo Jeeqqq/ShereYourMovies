@@ -14,6 +14,14 @@
         AllowSorting="true"
         AllowPaging="true"
 
+        OnSorting="grdElokuvat_Sorting"
+        OnSelectedIndexChanging="grdElokuvat_SelectedIndexChanging"
+        OnPageIndexChanging="grdElokuvat_PageIndexChanging" 
+        OnRowCancelingEdit="grdElokuvat_RowCancelingEdit" 
+        OnRowDeleting="grdElokuvat_RowDeleting" 
+        OnRowEditing="grdElokuvat_RowEditing" 
+        OnRowUpdating="grdElokuvat_RowUpdating"
+
         BackColor="LightGoldenrodYellow" 
         BorderColor="Tan" 
         BorderWidth="1px" 
@@ -30,7 +38,140 @@
         <SortedDescendingCellStyle BackColor="#E1DB9C" />
         <SortedDescendingHeaderStyle BackColor="#C2A47B" />
         <Columns>
-            <asp:BoundField DataField="Nimi" HeaderText="Nimi" SortExpression="nimi" />
+            <asp:BoundField DataField="Nimi" HeaderText="Nimi" SortExpression="Nimi" />
+            <asp:BoundField DataField="Tahdet" HeaderText="Tähdet" SortExpression="Tahdet" />
         </Columns>
     </asp:GridView>
+
+
+    <asp:ListView ID="ListView1" runat="server" >
+        
+        <LayoutTemplate>
+            <div runat="server" id="ShowMovies" >
+           <div runat="server" id="itemPlaceholder" />
+          </div>
+        </LayoutTemplate>
+         <ItemTemplate>
+             
+          <div id="div1" runat="server" class="moviesList">
+              
+            <asp:Panel ID="myPanel" runat="server" BackColor="WhiteSmoke" BorderWidth="1" ToolTip=<%#Eval("Tooltip") %> >
+                <h4><asp:Label ID="Label1" ToolTip=<%#Eval("Nimi") %> runat="server" ><%#Eval("Nimi") %></asp:Label> </h4>
+                
+                  <table>
+                   <tr>
+                        <td rowspan="8" ><asp:ImageButton runat="server" ID="Image1" BorderWidth="1" CommandArgument='<%#Eval("ELokuvaID") %>' OnCommand="openMovieInfo_Command"  CssClass="listImage" ImageUrl='<%#Eval("DbTiedot.Poster") %>' /></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Nimi : </td>
+                        <td><asp:Label ToolTip=<%#Eval("DbTiedot.Title") %> runat="server" ><%#Eval("DbTiedot.Title") %></asp:Label> </td>
+                    </tr> 
+                    <tr>
+                        <td></td>
+                        <td>Oma Arvosana : </td>
+                        <td><%#Eval("Arvosana") %></td>
+                    </tr>  
+                     <tr>
+                        <td></td>
+                        <td>Imdb Arvosana : </td>
+                        <td><%#Eval("DbTiedot.ImdbRating") %> / 10</td>
+                    </tr>    
+                     <tr>
+                        <td></td>
+                        <td>Lista : </td>
+                        <td><%#Eval("Lista") %></td>
+                    </tr>  
+                     <tr>
+                        <td></td>
+                        <td>Pituus : </td>
+                        <td><%#Eval("Pituus") %></td>
+                    </tr>
+                      <tr>
+                        <td></td>
+                        <td>Linkki Imdb:seen : </td>
+                        <td><a href='<%#Eval("ImbdLinkki") %>' target="_blank" />Imdb</<a></td>
+                    </tr>  
+                   <tr>
+                        <td></td>
+                        <td>Julkaisuvuosi : </td>
+                        <td><%#Eval("DbTiedot.Year") %></td>
+                    </tr>
+                          
+                                       
+                </table>
+              </asp:Panel>
+             
+          </div>
+                
+        </ItemTemplate>
+            
+    </asp:ListView>
+    <asp:ListView ID="ListView2" runat="server" >
+        
+        <LayoutTemplate>
+            <div runat="server" id="ShowMovies" >
+           <div runat="server" id="itemPlaceholder" />
+          </div>
+        </LayoutTemplate>
+         <ItemTemplate>
+             
+          <div id="div1" runat="server" class="moviesList">
+              
+            <asp:Panel ID="myPanel" runat="server" BackColor="WhiteSmoke" BorderWidth="1" ToolTip=<%#Eval("Tooltip") %> >
+                <h4><asp:Label ID="Label1" ToolTip=<%#Eval("Nimi") %> runat="server" ><%#Eval("Nimi") %></asp:Label> </h4>
+                
+                  <table>
+                   <tr>
+                        <td rowspan="9" ><asp:ImageButton runat="server" ID="Image1" BorderWidth="1" CommandArgument='<%#Eval("ELokuvaID") %>' CommandName="Select"  CssClass="listImage" ImageUrl='<%#Eval("DbTiedot.Poster") %>' /></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Nimi : </td>
+                        <td><asp:Label ID="Label2" ToolTip=<%#Eval("DbTiedot.Title") %> runat="server" ><%#Eval("DbTiedot.Title") %></asp:Label> </td>
+                    </tr> 
+                    <tr>
+                        <td></td>
+                        <td>Oma Arvosana : </td>
+                        <td><%#Eval("Arvosana") %></td>
+                    </tr>  
+                     <tr>
+                        <td></td>
+                        <td>Imdb Arvosana : </td>
+                        <td><%#Eval("DbTiedot.ImdbRating") %> / 10</td>
+                    </tr>    
+                     <tr>
+                        <td></td>
+                        <td>Lista : </td>
+                        <td><%#Eval("Lista") %></td>
+                    </tr>  
+                     <tr>
+                        <td></td>
+                        <td>Pituus : </td>
+                        <td><%#Eval("Pituus") %></td>
+                    </tr>
+                      <tr>
+                        <td></td>
+                        <td>Linkki Imdb:seen : </td>
+                        <td><a href='<%#Eval("ImbdLinkki") %>' target="_blank" />Imdb</<a></td>
+                    </tr>  
+                   <tr>
+                        <td></td>
+                        <td>Julkaisuvuosi : </td>
+                        <td><%#Eval("DbTiedot.Year") %></td>
+                    </tr>      
+                      <tr>
+                        <td></td>
+                        <td>Takaisin : </td>
+                        <td><asp:LinkButton runat="server" ID="btnBack" OnCommand="btnBack_Command" >Takaisin</asp:LinkButton> </td>
+                    </tr>                    
+                </table>
+              </asp:Panel>
+             
+          </div>
+                
+        </ItemTemplate>
+            
+    </asp:ListView>
+    
 </asp:Content>
