@@ -12,16 +12,13 @@ namespace ShereYourMovies
 {
     public partial class RSSFeeds : System.Web.UI.Page
     {
-        public RssLista feed;
+        public RssLista feed = new RssLista();
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                RssLista feed1 = new RssLista();
-                string uri = Server.MapPath(@".\App_Data\RSSFeeds1.xml");
-
-                Serialisointi.DeSerialisoiXml(uri, ref feed1);
-                feed = feed1;
+                feed = RssController.LoadFeeds();
                 ViewState["feed"] = feed;
             }
             else
@@ -29,37 +26,28 @@ namespace ShereYourMovies
                 feed = (RssLista)ViewState["feed"];
             }
 
-            updateFeeds();
+            if (feed != null)
+            {
+                bindFeeds();
+            }
         }
         
-        private void updateFeeds()
+        // Bindataan feedit
+        private void bindFeeds()
         {
             DataList1.DataSource = feed.feedit;
             DataList1.DataBind();
         }
-        
-        // TEMP
-        protected void AddFeed(string author, string title)
-        {
-            try 
-            {
-                string uri = Server.MapPath(@".\App_Data\RSSFeeds1.xml");
-                Rss r = new Rss();
-                r.author = author;
-                r.Title = title;
-                r.pubDate = DateTime.Now.ToString();
-                feed.feedit.Add(r);
-                Serialisointi.SerialisoiXml(uri, feed);
-                updateFeeds();
-            } 
-            catch 
-            {
-            }
-        }
 
+        // TEMP: Testi nappula
         protected void Button1_Click(object sender, EventArgs e)
         {
-            AddFeed("Vepsä", "Hapatuksen multihuipentuma");
+            RssController.AddFeed("Vepsä", "Hujasen Hapatukset", "like");
+            RssController.AddFeed("Hujanen", "Hapatuksen Multihuipentuma", "watch");
+            RssController.AddFeed("Narsuman", "FreeNest III", "vaara_type_testiksi");
+
+            feed = RssController.LoadFeeds();
+            bindFeeds();
         }
     }
 }

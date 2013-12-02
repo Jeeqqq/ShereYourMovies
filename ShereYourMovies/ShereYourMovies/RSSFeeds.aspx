@@ -16,14 +16,18 @@
             XPath="rss/item"></asp:XmlDataSource>
    
     </div>
-            <asp:DataList ID="DataList1" runat="server" BackColor="White" BorderColor="#404040" BorderStyle="Solid" GridLines="Vertical" Width="250px">
+            <asp:DataList ID="DataList1" runat="server" ForeColor="#333333" ShowFooter="False" ShowHeader="False" >
                 <ItemTemplate>
-                    <%#Eval("title")%><br />
-                    <%#Eval("author")%><br />
-                    <%#Eval("pubDate")%><br />
+                    <table>
+                        <td style="width: 200px"><%#Eval("pubDate")%></td>
+                        <td style="width: 500px"><%#Eval("title")%></td>
+                    </table>
                 </ItemTemplate>
-                <AlternatingItemStyle BackColor="CadetBlue" />
-                <ItemStyle BackColor="AliceBlue" ForeColor="Black" />
+                <AlternatingItemStyle BackColor="White" Font-Bold="False" Font-Italic="False" Font-Overline="False" Font-Strikeout="False" Font-Underline="False" />
+                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" Font-Italic="False" Font-Overline="False" Font-Strikeout="False" Font-Underline="False" />
+                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                <ItemStyle BackColor="#EFF3FB" Font-Bold="False" Font-Italic="False" Font-Overline="False" Font-Strikeout="False" Font-Underline="False" />
+                <SelectedItemStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
             </asp:DataList>
     </form>
 </body>
