@@ -28,15 +28,10 @@ namespace ShereYourMovies.Classes
             {
                 db.CreateDatabase();
             }
-
+            
 
 
             //string msg=  UserController.RegisterUser("Teppo", "salasana", ref db);
-            Elokuva leffa = new Elokuva();
-            leffa.Nimi = "Vepsän Leffa";
-            leffa.UserName = "teppo";
-
-            db.Elokuva.InsertOnSubmit(leffa);
             db.SubmitChanges();
 
         }
@@ -111,11 +106,7 @@ namespace ShereYourMovies.Classes
         {
             try
             {
-                var q = (from Elokuva in db.Elokuva
-                         where Elokuva.ElokuvaID == elokuva.ElokuvaID
-                        select Elokuva).First();
-
-                q = elokuva;
+               
 
                 db.SubmitChanges();
 
@@ -134,6 +125,7 @@ namespace ShereYourMovies.Classes
         {
             try
             {
+                db.Movie.DeleteOnSubmit(elokuva.DbTiedot);
                 db.Elokuva.DeleteOnSubmit(elokuva);
                 db.SubmitChanges();
 

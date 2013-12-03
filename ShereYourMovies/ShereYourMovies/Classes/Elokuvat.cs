@@ -10,6 +10,7 @@ using System.Data.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using ImdbApi;
+using System.Reflection;
 
 namespace ShereYourMovies.Classes
 {
@@ -18,10 +19,10 @@ namespace ShereYourMovies.Classes
     public class Elokuva
     {
         #region muuttujat
-
+        private static readonly Dictionary<string, PropertyInfo> _publicProperties;
         //yhdistetään User Taulu Elokuva Tauluun
         [Column]
-        public string UserName;
+        public string UserName { get; set; }
 
         //Muuttujat
         private int _elokuvaID;
@@ -79,12 +80,45 @@ namespace ShereYourMovies.Classes
  
         #endregion
 
+        public void Update(string propertyName, string value)
+        {
+            PropertyInfo propertyInfo;
+            _publicProperties.TryGetValue(propertyName, out propertyInfo);
+
+            if (propertyInfo != null)
+            {
+                int q = 0;
+                bool w=true;
+                if(propertyInfo.PropertyType.Equals(q.GetType()))
+                {
+                    q = Int32.Parse(value);
+                    propertyInfo.SetValue(this, q, null);
+                }
+                else if(propertyInfo.PropertyType.Equals(w.GetType()))
+                {
+                    w = bool.Parse(value);
+                    propertyInfo.SetValue(this, w, null);
+                }
+                else
+                propertyInfo.SetValue(this, value, null);
+            }
+            else
+            {
+                throw new ArgumentException("Elokuva does not contain a property of the name " + propertyName, "propertyName");
+            }
+        }
 
 
         #region konstruktorit
+        static Elokuva()
+        {
+            const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.SetProperty;
+
+            _publicProperties = typeof(Elokuva).GetProperties(bindingFlags).ToDictionary(propertyInfo => propertyInfo.Name);
+        }
         public Elokuva()
         {
-
+            
         }
         public Elokuva(string nimi, string ohjaaja, string genre, int tahdet)
         {

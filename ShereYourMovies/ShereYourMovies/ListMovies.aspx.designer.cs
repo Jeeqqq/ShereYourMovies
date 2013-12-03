@@ -13,15 +13,6 @@ namespace ShereYourMovies {
     public partial class ListMovies {
         
         /// <summary>
-        /// grdElokuvat control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView grdElokuvat;
-        
-        /// <summary>
         /// DataPagerMovies control.
         /// </summary>
         /// <remarks>
@@ -47,5 +38,14 @@ namespace ShereYourMovies {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ListView ListView2;
+        
+        /// <summary>
+        /// ListView3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListView ListView3;
     }
 }

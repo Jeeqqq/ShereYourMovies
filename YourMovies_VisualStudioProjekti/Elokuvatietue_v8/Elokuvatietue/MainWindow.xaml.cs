@@ -55,9 +55,9 @@ namespace Elokuvatietue
             //UserController.RegisterUser("teppo", "salasana", ref db);
 
             username = "teppo";
-
-
-
+            var authService = new AuthenticationService.AuthenticationServiceClient();
+            bool login= authService.Login("teppo","salasana",string.Empty,true);
+           
             var leffat = ElokuvaController.getMoviesByUsers(username, ref db);
 
             bool exist = false;
@@ -497,6 +497,7 @@ namespace Elokuvatietue
                 mnOmatelo.Items.Add(esine[esine.Count - 1]);
                 db.Elokuva.InsertAllOnSubmit(movies.Movies);
                 paivitaDatagrid(movies.Movies);
+                listatTyhjat();
                 //ilmoitus käyttäjälle
                 Echo(string.Format("Lista lisätty onnistuneesti"));
                 }

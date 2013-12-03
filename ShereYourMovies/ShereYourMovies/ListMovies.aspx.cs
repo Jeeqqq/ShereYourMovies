@@ -7,12 +7,14 @@ using System.Web.UI.WebControls;
 
 using ShereYourMovies.Classes;
 using System.Collections;
+using ImdbApi;
 
 namespace ShereYourMovies
 {
     public partial class ListMovies : System.Web.UI.Page
     {
         List<Elokuva> elokuvalista = new List<Elokuva>();
+        Result searchResults = new Result();
         Elokuva _leffa;
         Elokuva leffa
         { 
@@ -63,6 +65,7 @@ namespace ShereYourMovies
                 elokuvalista = (List<Elokuva>)Session["elokuvalista"];
                 db = (YourMovies)Session["db"];
                 leffa = (Elokuva)Session["selectedMovie"];
+                searchResults = (Result)Session["searchResults"];
             }
         }
 
@@ -83,12 +86,10 @@ namespace ShereYourMovies
             Session["elokuvalista"] = elokuvalista;
         }
 
-        protected void toGridView(List<Elokuva> elokuva) 
-        {
-            Session["elokuvalista"] = elokuva;
-
-            grdElokuvat.DataSource = elokuva;
-            grdElokuvat.DataBind();
+        protected void bindSearchResult(Result r) 
+        {      
+            ListView3.DataSource = r.Movies;
+            ListView3.DataBind();
         }
         protected void toListView(List<Elokuva> elokuva)
         {
@@ -99,98 +100,21 @@ namespace ShereYourMovies
         protected void toListView2()
         {
             toListView(null);
-            List<Elokuva> elokuva = new List<Elokuva>();
-            elokuva.Add(leffa);
-            ListView2.DataSource = elokuva;
             ListView2.DataBind();
+            
         }
-
-        #region grdElokuvat controls
-        protected void grdElokuvat_Sorting(object sender, GridViewSortEventArgs e)
-        {
-            GridViewSortExpression = e.SortExpression;
-            toGridView(ElokuvaController.sortList(elokuvalista, GridViewSortExpression, GetSortDirection()));
-        }
-
-        protected void grdElokuvat_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
-            grdElokuvat.PageIndex = e.NewPageIndex;
-            toGridView(elokuvalista);
-        }
-
-        protected void grdElokuvat_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
-        {
-            grdElokuvat.EditIndex = -1;
-            toGridView(elokuvalista);
-        }
-
-        protected void grdElokuvat_RowDeleting(object sender, GridViewDeleteEventArgs e)
-        {
-            if (ElokuvaController.deleteElokuva(elokuvalista.ElementAt(e.RowIndex), ref db))
-            {
-                elokuvalista.RemoveAt(e.RowIndex);
-                //lblDebug.InnerText = "Poistaminen onnistui!";
-            }
-            else
-            {
-               // lblDebug.InnerText = "Poistaminen ei onnistunut!";
-            }
-            toGridView(elokuvalista);
-        }
-
-        protected void grdElokuvat_RowEditing(object sender, GridViewEditEventArgs e)
-        {
-            grdElokuvat.EditIndex = e.NewEditIndex;
-            toGridView(elokuvalista);
-        }
-
-        protected void grdElokuvat_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        {
-            GridViewRow row = grdElokuvat.Rows[e.RowIndex];
-
-            elokuvalista[e.RowIndex].Nimi = ((TextBox)(row.Cells[1].Controls[0])).Text;
-
-            if (ElokuvaController.updateElokuva(elokuvalista.ElementAt(e.RowIndex), ref db))
-            {
-                grdElokuvat.EditIndex = -1;
-               // lblDebug.InnerText = "Päivitys onnistui!";
-            }
-            else
-            {
-                GridViewCancelEditEventArgs a = new GridViewCancelEditEventArgs(e.RowIndex);
-               // lblDebug.InnerText = "Päivitys ei onnistunut!";
-                grdElokuvat_RowCancelingEdit(sender, a);
-            }
-
-            myIni();
-        }
-
-        protected void grdElokuvat_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
-        {
-            Session["elokuvainfo"] = elokuvalista.ElementAt(e.NewSelectedIndex);
-            Server.TransferRequest("~/MovieInfo.aspx");
-        }
-        #endregion
-
         protected void openMovieInfo_Command(object sender, CommandEventArgs e)
         {
             int id =Int32.Parse(e.CommandArgument.ToString());
             List<Elokuva> elokuva=elokuvalista.FindAll(eKuva => eKuva.ElokuvaID == id);
             leffa = elokuva.ElementAt(0);
             toListView2();
-
+            ListView3.DataSource = null;
+            ListView3.DataBind();
             DataPagerMovies.Visible = false;
 
         }
 
-        protected void btnBack_Command(object sender, CommandEventArgs e)
-        {
-            leffa = null;
-            toListView(elokuvalista);
-            DataPagerMovies.Visible = true;
-            ListView2.DataSource = null;
-            ListView2.DataBind();
-        }
 
         protected void ListView1_PagePropertiesChanging(object sender, PagePropertiesChangingEventArgs e)
         {
@@ -199,14 +123,9 @@ namespace ShereYourMovies
             
             //rebind List View
             toListView(elokuvalista);
-            ListView2.DataSource = null;
-            ListView2.DataBind();
         }
 
-        protected void btnEtsi_Command(object sender, CommandEventArgs e)
-        {
-            toListView2();
-        }
+
 
 
         protected void ListView2_ItemCommand(object sender, ListViewCommandEventArgs e)
@@ -218,41 +137,168 @@ namespace ShereYourMovies
                     ListView2.EditIndex = 0;
                     break;
                 case "Update":
-                    
+                    break;
+                case "Back":
+                    leffa = null;
+                    toListView(elokuvalista);
+                    DataPagerMovies.Visible = true;
+                    ListView2.DataSource = null;
+                    ListView2.DataBind();
+                    ListView3.DataSource = null;
+                    ListView3.DataBind();
+                    break;
+                case "Etsi":
+                    searchResults = new Result();
+                    SearchResult s = new SearchResult();
+                    s.Title = "Etsi elokuvia nimen perusteella";
+                    s.Year = 1;
+                    s.Type = "Haku";
+                    searchResults.Movies.Add(s);
+                    bindSearchResult(searchResults);
+                    break;
+                case "Delete":
+                    DataPagerMovies.Visible = true;
+                    leffa = null;
                     break;
             }
         }
 
         protected void ListView2_ItemEditing(object sender, ListViewEditEventArgs e)
-        {
-            toListView2();
-            
-        }
+        {}
 
         protected void ListView2_ItemUpdating(object sender, ListViewUpdateEventArgs e)
         {
-            var asd = ListView2.Items[e.ItemIndex];
+            
+            
             foreach (DictionaryEntry de in e.NewValues)
             {
-                // Check if the value is null or empty.
-                if (de.Value == null || de.Value.ToString().Trim().Length == 0)
+                if (de.Value != null)
                 {
-                   
-                    e.Cancel = true;
+                    if (!de.Value.Equals(e.OldValues[de.Key]))
+                    {
+                        if (de.Key.ToString().Contains("DbTiedot"))
+                        {
+                            string propertyName = de.Key.ToString().Split('.')[1];
+                            leffa.DbTiedot.Update(propertyName, de.Value.ToString());
+                            if (propertyName.Equals("Title"))
+                            {
+                                leffa.Update("Nimi", de.Value.ToString());
+                            }
+                        }
+                        else
+                            leffa.Update(de.Key.ToString(), de.Value.ToString());
+                    }
+                    
                 }
-            } 
-            ListView2.EditIndex = -1;
-            toListView2();
-            
-            
+
+            }
+            if (leffa.DbTiedot.Poster.Equals("~/Images/No-Photo-Available.jpg"))
+            {
+                leffa.DbTiedot.Poster = null;
+            }
+
         }
 
-        protected void ListView2_ItemUpdated(object sender, ListViewUpdatedEventArgs e)
+       
+
+        // The return type can be changed to IEnumerable, however to support
+        // paging and sorting, the following parameters must be added:
+        //     int maximumRows
+        //     int startRowIndex
+        //     out int totalRowCount
+        //     string sortByExpression
+        public IQueryable ListView2_GetData()
+        {
+            db = (YourMovies)Session["db"];
+            leffa = (Elokuva)Session["selectedMovie"];
+           var leffat=from Elokuva in db.Elokuva
+               where Elokuva.ElokuvaID == leffa.ElokuvaID
+               select Elokuva;
+           if (leffa == null)
+               return null;
+           else
+            return leffat;
+        }
+
+        // The id parameter name should match the DataKeyNames value set on the control
+        public void ListView2_DeleteItem(int ElokuvaID)
+        {
+            Elokuva leffaToDelete =(Elokuva)( from Elokuva in db.Elokuva where Elokuva.ElokuvaID == ElokuvaID select Elokuva).First();
+            ElokuvaController.deleteElokuva(leffaToDelete, ref db);
+
+            myIni();
+        }
+
+        // The id parameter name should match the DataKeyNames value set on the control
+        public void ListView2_UpdateItem(int ElokuvaID)
+        {
+            Label msg = (Label)ListView2.FindControl("infoMsg");
+            msg.Visible = true;
+            if (!ElokuvaController.updateElokuva(leffa, ref db))
+            {
+                msg.Text = "Talentaminen epäonnistui";
+            }
+            else
+            {
+                msg.Visible = false;
+                msg.Text = "";
+            }
+            ListView2.DataBind();
+        }
+
+
+        protected void btnSearch_Command(object sender, CommandEventArgs e)
+        {
+            TextBox txt = (TextBox)ListView3.FindControl("Search");
+            Label label = (Label)ListView3.FindControl("searchInfo");
+            label.Text = "";
+            string nimi = txt.Text;
+            Search.DeSerialisoiSearch(nimi, ref searchResults);
+            toListView2();
+            Session["searchResults"] = searchResults;
+            if (searchResults.Movies.Count == 0)
+            {
+                
+              
+                label.Text = "Elokuvia ei löytynyt annetulla parametrillä";
+            }
+            else 
+            bindSearchResult(searchResults);
+        }
+
+        protected void btnSelect_Command(object sender, CommandEventArgs e)
         {
             toListView2();
-            leffa = (Elokuva)ListView2.EditItem.DataItem;
-            ElokuvaController.updateElokuva(leffa, ref db);
         }
 
+
+        protected void ListView3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(ListView3.SelectedIndex>=0)
+            {
+                if (searchResults != null)
+                {
+                    if (searchResults.Movies.Count != 1 && !searchResults.Movies.ElementAt(0).Type.Equals("Haku"))
+                    {
+                        SearchResult sResult = searchResults.Movies.ElementAt(ListView3.SelectedIndex);
+
+                        Movie movie = leffa.DbTiedot;
+                        Search.DeSerialisoiIdSeach(sResult.ImdbID, ref movie);
+                        leffa.Nimi = movie.Title;
+                        ElokuvaController.updateElokuva(leffa, ref db);
+                        toListView2();
+                    }
+                }
+              ListView3.SelectedIndex = -1;
+            }
+        }
+
+        protected void ListView3_SelectedIndexChanging(object sender, ListViewSelectEventArgs e)
+        {
+            if(searchResults != null)
+            bindSearchResult(searchResults);
+        }
+
+        
     }
 }

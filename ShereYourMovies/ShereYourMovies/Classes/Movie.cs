@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -13,6 +14,7 @@ namespace ShereYourMovies.Classes
     [Table(Name = "Movie")]
     public class Movie
     {
+        private static readonly Dictionary<string, PropertyInfo> _publicProperties;
         private int _movieID;
 
         [Column(DbType = "BigInt IDENTITY NOT NULL", IsPrimaryKey = true, IsDbGenerated = true)]
@@ -43,18 +45,21 @@ namespace ShereYourMovies.Classes
         public string Actors { get; set; }
         [Column]
         public string Plot { get; set; }
-
-        private string _poster;
         [Column]
-        public string Poster { get{return _poster;}
-            set
+        private string _poster;
+
+        
+        public string Poster
+        {
+            set { _poster=value; }
+            get
             {
-                if (value == "tietoja ei löytynyt" || value == null)
+                if (_poster == "tietoja ei löytynyt" || _poster == null || _poster == "N/A")
                 {
-                    _poster="~/Images/No-Photo-Available.jpg";
+                    return "~/Images/No-Photo-Available.jpg";
                 }
                 else{
-                    _poster=value;
+                    return _poster;
                 }
             } 
         }
@@ -71,6 +76,33 @@ namespace ShereYourMovies.Classes
         {
 
 
+        }
+        static Movie()
+        {
+            const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.SetProperty;
+
+            _publicProperties = typeof(Movie).GetProperties(bindingFlags).ToDictionary(propertyInfo => propertyInfo.Name);
+        }
+        public void Update(string propertyName, string value)
+        {
+            PropertyInfo propertyInfo;
+            _publicProperties.TryGetValue(propertyName, out propertyInfo);
+
+            if (propertyInfo != null)
+            {
+                int q = 0;
+                if (propertyInfo.PropertyType.Equals(q.GetType()))
+                {
+                    q = Int32.Parse(value);
+                    propertyInfo.SetValue(this, q, null);
+                }
+                else
+                    propertyInfo.SetValue(this, value, null);
+            }
+            else
+            {
+                throw new ArgumentException("Movie does not contain a property of the name " + propertyName, "propertyName");
+            }
         }
     }
     #endregion

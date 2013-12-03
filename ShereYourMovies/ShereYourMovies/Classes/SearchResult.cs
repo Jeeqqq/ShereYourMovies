@@ -33,8 +33,9 @@ namespace ImdbApi
         public int Year { get; set; }
         [XmlAttribute("Type")]
         public string Type { get; set; }
-     [XmlAttribute("imdbID")]
+        [XmlAttribute("imdbID")]
         public string ImdbID { get; set; }
+        
 
         public SearchResult()
         {
@@ -61,7 +62,7 @@ namespace ImdbApi
                  HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
                  myRequest.AllowAutoRedirect = true;
                  myRequest.Method = "GET";
-                 myRequest.Timeout = 10000;
+                 myRequest.Timeout = 6000;
                  WebResponse myResponse = myRequest.GetResponse();
 
 
@@ -110,6 +111,12 @@ namespace ImdbApi
             }
 
         }
+        public static string UppercaseFirst(string s)
+        {
+            char[] a = s.ToCharArray();
+            a[0] = char.ToUpper(a[0]);
+            return new string(a);
+        }
         public static void dezirialiseXML(ref XmlTextReader reader,ref Movie movie)
         {
            
@@ -118,51 +125,8 @@ namespace ImdbApi
             XmlNode node = doc.SelectSingleNode("//movie");
             foreach (XmlAttribute att in node.Attributes)
             {
-                switch (att.Name)
-                {
-                    case "title":
-                        movie.Title = att.Value;
-                        break;
-                    case "year":
-                        movie.Year = att.Value;
-                        break;
-                    case "rated":
-                        movie.Rated = att.Value;
-                        break;
-                    case "runtime":
-                        movie.Runtime = att.Value;
-                        break;
-                    case "genre":
-                        movie.Genre = att.Value;
-                        break;
-                    case "director":
-                        movie.Director = att.Value;
-                        break;
-                    case "writer":
-                        movie.Writer = att.Value;
-                        break;
-                    case "actors":
-                        movie.Actors = att.Value;
-                        break;
-                    case "poster":
-                        movie.Poster = att.Value;
-                        break;
-                    case "plot":
-                        movie.Plot = att.Value;
-                        break;
-                    case "imdbRating":
-                        movie.ImdbRating = att.Value;
-                        break;
-                    case "imdbVotes":
-                        movie.ImdbVotes = att.Value;
-                        break;
-                    case "imdbID":
-                        movie.ImdbID = att.Value;
-                        break;
-                    case "type":
-                        movie.Type = att.Value;
-                        break;
-                }
+                string prop =Search.UppercaseFirst(att.Name);
+                movie.Update(prop, att.Value);
 
             }
            

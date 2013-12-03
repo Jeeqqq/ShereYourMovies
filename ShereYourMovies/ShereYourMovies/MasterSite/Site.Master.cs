@@ -61,6 +61,8 @@ namespace ShereYourMovies
                     string con = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                     SqlConnection myConnection = new SqlConnection(con);
                     YourMovies db = new YourMovies(myConnection);
+                    //tämä rivi luo tietokannan, aja se kerran ja sitten kommentoi rivi
+                    //  ElokuvaController.initDatabase(ref db);
                     Session["db"] = db;
                 }
                 // Set Anti-XSRF token
@@ -83,9 +85,8 @@ namespace ShereYourMovies
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //aja tämä vain kerran ja sitten kommentoi tämä rivi. tuon construoktori luo yhen leffan ja yhen käyttäjän
-            //username:Teppo ja pass: salasana
-            //  ElokuvaController.initDatabase(ref db);
+
+            
             
             
             
