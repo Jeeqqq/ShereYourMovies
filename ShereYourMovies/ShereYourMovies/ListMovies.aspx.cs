@@ -299,6 +299,10 @@ namespace ShereYourMovies
             bindSearchResult(searchResults);
         }
 
+        public static string[] GetCompletionList(string prefixText, int count, string contextKey)
+        {
+            return default(string[]);
+        } 
         
     }
 }

@@ -19,7 +19,7 @@ namespace ShereYourMovies.Classes
         public static void initDatabase(ref YourMovies db)
         {
 
-	 if (db.DatabaseExists())
+	        if (db.DatabaseExists())
             {
                 db.DeleteDatabase();
                 db.CreateDatabase();
@@ -43,6 +43,15 @@ namespace ShereYourMovies.Classes
                     select Elokuva;
 
             return m;
+        }
+
+        public static List<string> getUsernamesLike(string username, ref YourMovies db) 
+        {
+            var m = from Elokuva in db.Elokuva
+                    where Elokuva.UserName.StartsWith(username)
+                    select Elokuva.UserName;
+
+            return m.ToList();
         }
 
         public static IQueryable<Elokuva> getMoviesByListName(string listName, string username, ref YourMovies db)

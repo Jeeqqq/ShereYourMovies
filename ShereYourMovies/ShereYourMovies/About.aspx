@@ -3,20 +3,16 @@
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <hgroup class="title">
         <h1><%: Title %>.</h1>
-        <h2>Your app description page.</h2>
+        <h2>Vähän meistä</h2>
     </hgroup>
 
     <article>
-        <p>        
-            Use this area to provide additional information.
+        <p>
+            Share Your Movies on uusi palvelu joka laajentaa huippu suositun Your Moviesin aivan uusiin ulottuvuuksiin!
         </p>
-
         <p>        
-            Use this area to provide additional information.
-        </p>
-
-        <p>        
-            Use this area to provide additional information.
+            Share your movies on omanlainen sosiaalinen media elokuva friikeille, jossa käyttäjät voivat tarkastella omia, 
+            ja muiden käyttäjien elokuvia. Sekä tietenkin jakaa ja tehdä arvosteluja ja jakaa muille hyviä elokuva vinkkejä.
         </p>
     </article>
 

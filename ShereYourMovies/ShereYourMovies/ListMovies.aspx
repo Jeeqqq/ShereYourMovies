@@ -1,10 +1,24 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterSite/Site.Master" AutoEventWireup="true" CodeBehind="ListMovies.aspx.cs" Inherits="ShereYourMovies.ListMovies" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="FeaturedContent" runat="server">
+
+    <asp:Label runat="server" Text="Stalkkaa muita saatana:" ForeColor="LightGray" Font-Size="Large"></asp:Label>
+    <asp:TextBox runat="server" ID="txtFindUsers"></asp:TextBox>
+    <asp:AutoCompleteExtender ID="txtFindUsers_AutoCompleteExtender" runat="server" 
+        DelimiterCharacters="" 
+        Enabled="True" 
+        ServicePath="" 
+        TargetControlID="txtFindUsers" 
+        UseContextKey="True">
+    </asp:AutoCompleteExtender>
+    <asp:Button runat="server" Text="Hae"/>
+
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
-       <asp:DataPager ID="DataPagerMovies" runat="server" PagedControlID="ListView1" PageSize="6" >
+<asp:DataPager ID="DataPagerMovies" runat="server" PagedControlID="ListView1" PageSize="6" >
     <Fields>
         <asp:NextPreviousPagerField ShowFirstPageButton="True" ShowNextPageButton="False" />
         <asp:NumericPagerField />
@@ -80,7 +94,8 @@
         
         <LayoutTemplate>
             <div runat="server" id="ShowMovies" >
-                <asp:LinkButton runat="server" ID="btnBack" CommandName="Back" >Takaisin</asp:LinkButton> </br>
+                <asp:LinkButton runat="server" ID="btnBack" CommandName="Back" >Takaisin</asp:LinkButton> 
+                <br> </br>
            <asp:Label BackColor="IndianRed" ForeColor="White" Font-Bold="true" Font-Size="Medium" id="infoMsg" runat="server"></asp:Label>
            <div runat="server" id="itemPlaceholder" /> 
           </div>
@@ -379,5 +394,4 @@
         </ItemTemplate>
             
     </asp:ListView>
-        
 </asp:Content>
