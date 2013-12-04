@@ -14,6 +14,7 @@
         TargetControlID="txtFindUsers" >
     </asp:AutoCompleteExtender>
     <asp:Button runat="server" ID="searchUser" OnClick="searchUser_Click" Text="Hae"/>
+    <asp:Label runat="server" ID="lblInfo" ForeColor="LightGray"></asp:Label>
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">

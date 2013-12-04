@@ -85,7 +85,8 @@ namespace ShereYourMovies
             List<Elokuva> elokuvalista = elokuva.ToList();
             leffa = null;
             Session["selectedMovie"] = leffa;
-           // toGridView(elokuvalista);
+
+            lblInfo.Text = "Löytyi "+elokuvalista.Count+" elokuvaa.";
             toListView(elokuvalista);
             Session["elokuvalista"] = elokuvalista;
             otsikko.InnerText = "Omat Elokuvat";
@@ -98,7 +99,6 @@ namespace ShereYourMovies
         }
         protected void toListView(List<Elokuva> elokuva)
         {
-
             ListView1.DataSource = elokuva;
             ListView1.DataBind();
         }
@@ -250,6 +250,7 @@ namespace ShereYourMovies
             if (!ElokuvaController.updateElokuva(leffa, ref db))
             {
                 msg.Text = "Talentaminen epäonnistui";
+                lblInfo.Text = "Tiedot muokattu onnistuneesti!";
             }
             else
             {
@@ -351,6 +352,8 @@ namespace ShereYourMovies
             List<Elokuva> elokuvat = elokuvalista.FindAll(eKuva => eKuva.ElokuvaID == id);
             Elokuva elokuva = elokuvat.ElementAt(0);
             RssController.AddFeedAndSave(Context.User.Identity.Name, elokuva.Nimi, "like", ref db);
+
+            lblInfo.Text = "Tykkäsit käyttäjän "+Context.User.Identity.Name+" elokuvasta "+elokuva.Nimi;
         }
  
         

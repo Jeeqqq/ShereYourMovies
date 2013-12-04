@@ -3,20 +3,20 @@
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
     <hgroup class="title">
         <h1><%: Title %>.</h1>
-        <h2>Your contact page.</h2>
+        <h2>Ota meihin yhteyttä!</h2>
     </hgroup>
 
     <section class="contact">
         <header>
-            <h3>Phone:</h3>
+            <h3>Puhelin:</h3>
         </header>
         <p>
-            <span class="label">Main:</span>
-            <span>425.555.0100</span>
+            <span class="label">Viikolla 9:00 - 16:00:</span>
+            <span>Suuri-Johtaja-123-123</span>
         </p>
         <p>
-            <span class="label">After Hours:</span>
-            <span>425.555.0199</span>
+            <span class="label">Muina aikoina:</span>
+            <span>Älä ota yhteyttä me ollaan nukkumassa</span>
         </p>
     </section>
 
@@ -40,11 +40,11 @@
 
     <section class="contact">
         <header>
-            <h3>Address:</h3>
+            <h3>Osoite:</h3>
         </header>
         <p>
-            One Microsoft Way<br />
-            Redmond, WA 98052-6399
+            Piippukatu 2<br />
+            Jyväskylä, 40510?
         </p>
     </section>
 </asp:Content>

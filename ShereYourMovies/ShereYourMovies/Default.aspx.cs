@@ -26,7 +26,7 @@ namespace ShereYourMovies
         public IQueryable DataList1_GetData()
         {
             YourMovies db = (YourMovies)Session["db"];
-            return from Rss in db.Rss select Rss;
+            return (from Rss in db.Rss select Rss).OrderByDescending(rss => rss.pubDate);
         }
         protected void Button1_Click(object sender, EventArgs e)
         {

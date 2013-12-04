@@ -17,14 +17,14 @@
     </article>
 
     <aside>
-        <h3>Aside Title</h3>
+        <h3>Tutustu meihin!</h3>
         <p>        
-            Use this area to provide additional information.
+            Laitettais varmaan noihin linkkeihin lisää juttuja jos meillä riittäis kerrottavaa...
         </p>
         <ul>
-            <li><a runat="server" href="~/">Home</a></li>
-            <li><a runat="server" href="~/About">About</a></li>
-            <li><a runat="server" href="~/Contact">Contact</a></li>
+            <li><a runat="server" href="~/">Historiaa (Oikeasti etusivu)</a></li>
+            <li><a runat="server" href="~/About">Kokemuksia (Oikeasti tämäsivu)</a></li>
+            <li><a runat="server" href="~/Contact">Ota yhteyttä (Onko meillä oikeasti contact sivu?)</a></li>
         </ul>
     </aside>
 </asp:Content>
