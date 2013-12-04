@@ -33,6 +33,7 @@ namespace Elokuvatietue
         string valittulista;
         YourMovies db;
         string username;
+        RssLista  feedit;
         public MainWindow()
         {
             InitializeComponent();
@@ -42,7 +43,7 @@ namespace Elokuvatietue
 
         public void myIni() 
         {
-            
+            feedit = new RssLista();
             string con = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             SqlConnection myConnection = new SqlConnection(con);
             db = new YourMovies(myConnection);
@@ -55,6 +56,7 @@ namespace Elokuvatietue
             //UserController.RegisterUser("teppo", "salasana", ref db);
 
             username = "teppo";
+      
             var authService = new AuthenticationService.AuthenticationServiceClient();
             bool login= authService.Login("teppo","salasana",string.Empty,true);
            
@@ -166,6 +168,7 @@ namespace Elokuvatietue
             }
             this.Cursor = Cursors.Arrow;
         }
+        //lisää uuden elokuvan listaan
         private void etsiElokuvia(string filepath)
         {
             DirectoryInfo di = new DirectoryInfo(filepath);
@@ -177,6 +180,7 @@ namespace Elokuvatietue
                 Elokuva eKuva = new Elokuva(file.Name, file.FullName);
                 eKuva.Lista = valittulista;
                 eKuva.UserName = username;
+                feedit.feedit.Add(RssController.AddFeed(username, eKuva.Nimi, "new", ref db));
                 db.Elokuva.InsertOnSubmit(eKuva);
                 movies.Movies.Add(eKuva);
 
@@ -227,7 +231,8 @@ namespace Elokuvatietue
         private void ElokuvatTallennaLista_Click_1(object sender, RoutedEventArgs e)
         {
             //Serialisointi.SerialisoiXml(@"Listat\" + valittulista + ".xml", movies);
-            
+
+            RssController.SaveFeeds(ref feedit,ref db);
             
             db.SubmitChanges();
             

@@ -109,11 +109,18 @@
       <DependentUpon>ListaName.xaml</DependentUpon>
     </Compile>
     <Compile Include="Luokat\ElokuvaController.cs" />
+    <Compile Include="Luokat\Rss.cs" />
+    <Compile Include="Luokat\RssController.cs" />
     <Compile Include="Luokat\SearchResult.cs" />
     <Compile Include="Ikkunat\SearchWindow.xaml.cs">
       <DependentUpon>SearchWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Service References\AuthenticationService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\RssService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -195,6 +202,13 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\AuthenticationService\AuthenticationService.wsdl" />
+    <None Include="Service References\RssService\Elokuvatietue.RssService.HelloWorldResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RssService\Elokuvatietue.RssService.RssLista.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RssService\RssService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -233,6 +247,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\RssService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\RssService\configuration.svcinfo" />
+    <None Include="Service References\RssService\configuration91.svcinfo" />
+    <None Include="Service References\RssService\RssService.disco" />
     <None Include="Service References\AuthenticationService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -258,6 +279,7 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\AuthenticationService\" />
+    <WCFMetadataStorage Include="Service References\RssService\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

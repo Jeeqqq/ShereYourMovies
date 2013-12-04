@@ -8,6 +8,8 @@ using System.Web.UI.WebControls;
 using ShereYourMovies.Classes;
 using System.Collections;
 using ImdbApi;
+using System.Configuration;
+using System.Data.SqlClient;
 
 namespace ShereYourMovies
 {
@@ -16,6 +18,7 @@ namespace ShereYourMovies
         List<Elokuva> elokuvalista = new List<Elokuva>();
         Result searchResults = new Result();
         Elokuva _leffa;
+        List<string> usernames = new List<string>();
         Elokuva leffa
         { 
             get { return _leffa; } 
@@ -65,24 +68,27 @@ namespace ShereYourMovies
                 db = (YourMovies)Session["db"];
                 leffa = (Elokuva)Session["selectedMovie"];
                 searchResults = (Result)Session["searchResults"];
+               
             }
+            usernames = ElokuvaController.getAllUsers(ref db);
         }
 
         private void myIni()
         {
 
-            YourMovies db = (YourMovies)Session["db"];
+            db = (YourMovies)Session["db"];
             String username = Context.User.Identity.Name;
 
             IQueryable<Elokuva> elokuva = ElokuvaController.getMoviesByUsers(username, ref db);
 
+            
             List<Elokuva> elokuvalista = elokuva.ToList();
             leffa = null;
             Session["selectedMovie"] = leffa;
-
            // toGridView(elokuvalista);
             toListView(elokuvalista);
             Session["elokuvalista"] = elokuvalista;
+            otsikko.InnerText = "Omat Elokuvat";
         }
 
         protected void bindSearchResult(Result r) 
@@ -112,6 +118,7 @@ namespace ShereYourMovies
             ListView3.DataSource = null;
             ListView3.DataBind();
             DataPagerMovies.Visible = false;
+           
 
         }
 
@@ -188,6 +195,11 @@ namespace ShereYourMovies
                         }
                         else
                             leffa.Update(de.Key.ToString(), de.Value.ToString());
+
+                        if (de.Key.ToString().Equals("Watched") && bool.Parse(de.Value.ToString()) == true)
+                        {
+                            RssController.AddFeedAndSave(leffa.UserName, leffa.Nimi, "watch", ref db);
+                        }
                     }
                     
                 }
@@ -300,10 +312,38 @@ namespace ShereYourMovies
             bindSearchResult(searchResults);
         }
 
-        public static string[] GetCompletionList(string prefixText, int count, string contextKey)
+        protected void searchUser_Click(object sender, EventArgs e)
         {
-            return default(string[]);
-        } 
+            string username = txtFindUsers.Text;
+
+            var isUser = usernames.Find(asd=>asd == username);
+
+            if (!string.IsNullOrEmpty(isUser))
+            {
+
+                otsikko.InnerText = "Käyttäjän " + username + " Elokuvat";
+
+                elokuvalista = (ElokuvaController.getMoviesByUsers(username, ref db)).ToList();
+                Session["elokuvalista"] = elokuvalista;
+                toListView(elokuvalista);
+            }
+        }
+
+        protected void ListView2_ItemDataBound(object sender, ListViewItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListViewItemType.DataItem)
+            {
+                
+                Panel toolbaar = (Panel)e.Item.FindControl("toolbarpanel");
+                toolbaar.Visible = true;
+                if (Context.User.Identity.Name != leffa.UserName)
+                {
+
+                    toolbaar.Visible = false ;
+                }
+            }
+        }
+ 
         
     }
 }

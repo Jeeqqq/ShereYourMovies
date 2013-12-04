@@ -62,7 +62,7 @@ namespace ShereYourMovies
                     SqlConnection myConnection = new SqlConnection(con);
                     YourMovies db = new YourMovies(myConnection);
                     //tämä rivi luo tietokannan, aja se kerran ja sitten kommentoi rivi
-                    //  ElokuvaController.initDatabase(ref db);
+                      //ElokuvaController.initDatabase(ref db);
                     Session["db"] = db;
                 }
                 // Set Anti-XSRF token

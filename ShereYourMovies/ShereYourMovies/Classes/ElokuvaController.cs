@@ -44,14 +44,38 @@ namespace ShereYourMovies.Classes
 
             return m;
         }
-
+        public static List<string> getAllUsers(ref YourMovies db)
+        {
+            var m = from Elokuva in db.Elokuva
+                    select Elokuva.UserName;
+            List<string> lista = removeDublicates(m.ToList<string>());
+            return lista;
+        }
+        public static List<string> removeDublicates(List<string> m)
+        {
+            bool inList = false;
+            List<string> lista = new List<string>();
+            foreach (string s in m)
+            {
+                foreach (string str in lista)
+                {
+                    if (s.Equals(str))
+                    {
+                        inList = true;
+                    }
+                }
+                if (!inList)
+                    lista.Add(s);
+            }
+            return lista;
+        }
         public static List<string> getUsernamesLike(string username, ref YourMovies db) 
         {
             var m = from Elokuva in db.Elokuva
                     where Elokuva.UserName.StartsWith(username)
                     select Elokuva.UserName;
-
-            return m.ToList();
+            List<string> lista = removeDublicates(m.ToList<string>());
+            return lista;
         }
 
         public static IQueryable<Elokuva> getMoviesByListName(string listName, string username, ref YourMovies db)

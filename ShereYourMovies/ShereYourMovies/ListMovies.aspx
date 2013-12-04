@@ -1,24 +1,23 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterSite/Site.Master" AutoEventWireup="true" CodeBehind="ListMovies.aspx.cs" Inherits="ShereYourMovies.ListMovies" %>
-
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
-      
+<%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="asp" %>
+  
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="FeaturedContent" runat="server">
-
-    <asp:Label runat="server" Text="Stalkkaa muita saatana:" ForeColor="LightGray" Font-Size="Large"></asp:Label>
+    <asp:Label runat="server" Text="Etsi muiden käyttäjien elokuvia :" ForeColor="LightGray" Font-Size="Large"></asp:Label>
     <asp:TextBox runat="server" ID="txtFindUsers"></asp:TextBox>
-      <asp:AutoCompleteExtender ID="txtFindUsers_AutoCompleteExtender" runat="server" 
-        DelimiterCharacters="" 
-        Enabled="True" 
-        ServicePath="" 
-        TargetControlID="txtFindUsers" 
-        UseContextKey="True">
+    <asp:AutoCompleteExtender ID="txtFindUsers_AutoCompleteExtender" runat="server" 
+        MinimumPrefixLength="2"
+        CompletionInterval="100" EnableCaching="true" CompletionSetCount="10" 
+        ServicePath="~/Services/AutoCompleteService.asmx"
+        ServiceMethod="GetCompletionList" 
+        TargetControlID="txtFindUsers" >
     </asp:AutoCompleteExtender>
-    <asp:Button runat="server" Text="Hae"/>
+    <asp:Button runat="server" ID="searchUser" OnClick="searchUser_Click" Text="Hae"/>
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
+    <h2 id="otsikko" runat="server" style="margin-bottom:20px;" ></h2>
 <asp:DataPager ID="DataPagerMovies" runat="server" PagedControlID="ListView1" PageSize="6" >
     <Fields>
         <asp:NextPreviousPagerField ShowFirstPageButton="True" ShowNextPageButton="False" />
@@ -91,7 +90,7 @@
         </ItemTemplate>
             
     </asp:ListView>
-    <asp:ListView ID="ListView2" runat="server" DeleteMethod="ListView2_DeleteItem" UpdateMethod="ListView2_UpdateItem" OnItemUpdating="ListView2_ItemUpdating" OnItemCommand="ListView2_ItemCommand" OnItemEditing="ListView2_ItemEditing" DataKeyNames="ElokuvaID" SelectMethod="ListView2_GetData" >
+    <asp:ListView ID="ListView2" runat="server" OnItemDataBound="ListView2_ItemDataBound"  DeleteMethod="ListView2_DeleteItem" UpdateMethod="ListView2_UpdateItem" OnItemUpdating="ListView2_ItemUpdating" OnItemCommand="ListView2_ItemCommand" OnItemEditing="ListView2_ItemEditing" DataKeyNames="ElokuvaID" SelectMethod="ListView2_GetData" >
         
         <LayoutTemplate>
             <div runat="server" id="ShowMovies" >
@@ -215,11 +214,13 @@
               
              </asp:Panel> 
                <div class="clear-fix"></div>
+              <asp:Panel ID="toolbarpanel" runat="server">
               <div id="ToolBar" class="float-left" runat="server">
                   <asp:LinkButton runat="server" ID="btnEdit" CommandName="Edit">Muokkaa</asp:LinkButton>
                   <asp:LinkButton runat="server" ID="btnEtsi" CommandName="Etsi" >Etsi</asp:LinkButton>
                   <asp:LinkButton runat="server" ID="btnDelete" CommandName="Delete" >Poista</asp:LinkButton>
-              </div>      
+              </div> 
+              </asp:Panel>     
           </div>
                 
         </ItemTemplate>
@@ -337,13 +338,15 @@
               
              </asp:Panel>   
                  <div class="clear-fix"></div>
+              <asp:Panel ID="toolbarpanel" runat="server">
               <div id="ToolBar" class="float-left" runat="server">
                   <asp:LinkButton runat="server" ID="btnCancel" CommandName="Cancel">Peruuta</asp:LinkButton>
                   <asp:LinkButton runat="server" ID="btnEtsi"  CommandName="Etsi" >Etsi</asp:LinkButton>
                   <asp:LinkButton runat="server" ID="btnTallenna" CommandName="Update" >Tallenna</asp:LinkButton>
-           
+            
 
               </div>
+                   </asp:Panel>
           </div>
          </EditItemTemplate>   
     </asp:ListView>

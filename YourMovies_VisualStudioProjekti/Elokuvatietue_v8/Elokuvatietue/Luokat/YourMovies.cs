@@ -13,7 +13,7 @@ namespace Elokuvatietue
     {
           public Table<Elokuva> Elokuva;
           public Table<Movie> Movie;
-
+          public Table<Rss> Rss;
           public YourMovies(SqlConnection connection) : base(connection) { }
         
     }

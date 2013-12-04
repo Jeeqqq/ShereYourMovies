@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Web;
 using System.Xml.Serialization;
@@ -20,14 +21,21 @@ namespace ShereYourMovies.Classes
     }
 
 
-    [Serializable()]
+    [Table(Name = "Rss")]
     public class Rss
     {
-        [XmlElement("title")]
+        private int _rssID;
+        [Column(DbType = "BigInt IDENTITY NOT NULL", IsPrimaryKey = true, IsDbGenerated = true)]
+        public int RssID
+        {
+            set { _rssID = value; }
+            get { return _rssID; }
+        }
+        [Column]
         public string Title { get; set;}
-        [XmlElement("pubDate")]
+        [Column]
         public string pubDate { get; set; }
-        [XmlElement("author")]
+        [Column]
         public string author { get; set; }
 
         public Rss()

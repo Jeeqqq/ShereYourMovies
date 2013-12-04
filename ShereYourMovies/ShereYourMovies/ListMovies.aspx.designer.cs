@@ -22,6 +22,33 @@ namespace ShereYourMovies {
         protected global::System.Web.UI.WebControls.TextBox txtFindUsers;
         
         /// <summary>
+        /// txtFindUsers_AutoCompleteExtender control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.AutoCompleteExtender txtFindUsers_AutoCompleteExtender;
+        
+        /// <summary>
+        /// searchUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button searchUser;
+        
+        /// <summary>
+        /// otsikko control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl otsikko;
+        
+        /// <summary>
         /// DataPagerMovies control.
         /// </summary>
         /// <remarks>

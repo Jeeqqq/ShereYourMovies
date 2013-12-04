@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 using Elokuvatietue;
 using System.Xml;
 using ImdbApi;
+using System.Net;
 
 namespace Elokuvatietue
 {
@@ -125,6 +126,33 @@ namespace Elokuvatietue
             }
 
         }
+        public static void DeSerialisoiXml(string uri, ref RssLista feed)
+        {
+            XmlSerializer deserializer = new XmlSerializer(typeof(RssLista));
+            try
+            {
+                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(uri);
+                myRequest.AllowAutoRedirect = true;
+                myRequest.Method = "GET";
+                myRequest.Timeout = 10000;
+                WebResponse myResponse = myRequest.GetResponse();
+
+
+                XmlTextReader reader = new XmlTextReader(myResponse.GetResponseStream());
+                feed = (RssLista)deserializer.Deserialize(reader);
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+
+            }
+
+        }
+      
         #endregion
     }
 }
