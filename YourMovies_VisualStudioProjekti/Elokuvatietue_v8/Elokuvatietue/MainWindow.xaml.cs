@@ -30,6 +30,7 @@ namespace Elokuvatietue
         List<Lisatiedot> newWTiedot;
         List<MenuItem> esine;
         Asetukset newWAsetukset;
+        Login login;
         string valittulista;
         YourMovies db;
         string username;
@@ -43,60 +44,83 @@ namespace Elokuvatietue
 
         public void myIni() 
         {
-            feedit = new RssLista();
-            string con = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            SqlConnection myConnection = new SqlConnection(con);
-            db = new YourMovies(myConnection);
-            etsityt = new List<Elokuva>();
-            movies = new ElokuvaLista();
-            newWTiedot = new List<Lisatiedot>();
-            esine = new List<MenuItem>();
-
-            //ElokuvaController.initDatabase(ref db);
-            //UserController.RegisterUser("teppo", "salasana", ref db);
-
-            username = "teppo";
-      
-            var authService = new AuthenticationService.AuthenticationServiceClient();
-            bool login= authService.Login("teppo","salasana",string.Empty,true);
-           
-            var leffat = ElokuvaController.getMoviesByUsers(username, ref db);
-
-            bool exist = false;
-            foreach (Elokuva leffa in leffat)
+            if (username != null)
             {
-                MenuItem item=new MenuItem();
-                item.Header= leffa.Lista;
-                item.Click += new RoutedEventHandler(MenuItemClick);
-                foreach (MenuItem existingItem in esine)
+                Tyokalut.IsEnabled = true;
+                Menubaari.IsEnabled = true;
+
+                feedit = new RssLista();
+                string con = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                SqlConnection myConnection = new SqlConnection(con);
+                db = new YourMovies(myConnection);
+                etsityt = new List<Elokuva>();
+                movies = new ElokuvaLista();
+                newWTiedot = new List<Lisatiedot>();
+                esine = new List<MenuItem>();
+
+                //ElokuvaController.initDatabase(ref db);
+                //UserController.RegisterUser("teppo", "salasana", ref db);
+
+                var leffat = ElokuvaController.getMoviesByUsers(username, ref db);
+
+                bool exist = false;
+                foreach (Elokuva leffa in leffat)
                 {
-                    if (item.Header.Equals(existingItem.Header) && item.Header.ToString() != "")
+                    MenuItem item = new MenuItem();
+                    item.Header = leffa.Lista;
+                    item.Click += new RoutedEventHandler(MenuItemClick);
+                    foreach (MenuItem existingItem in esine)
                     {
-                        exist = true;
+                        if (item.Header.Equals(existingItem.Header) && item.Header.ToString() != "")
+                        {
+                            exist = true;
+                        }
                     }
+                    if (!exist)
+                    {
+                        esine.Add(item);
+                        mnOmatelo.Items.Add(item);
+                    }
+                    exist = false;
+
                 }
-                if (!exist)
+                valittulista = Properties.Settings.Default.OletusListaNimi.ToString();
+                var oletusLeffat = ElokuvaController.getMoviesByListName(valittulista, username, ref db);
+                if (oletusLeffat != null)
                 {
-                    esine.Add(item);
-                    mnOmatelo.Items.Add(item);
+                    movies.Movies = oletusLeffat.ToList<Elokuva>();
                 }
-                exist = false;
-                
-            }
-            valittulista = Properties.Settings.Default.OletusListaNimi.ToString();
-            var oletusLeffat = ElokuvaController.getMoviesByListName(valittulista, username, ref db);
-            if (oletusLeffat != null)
-            {
-                movies.Movies = oletusLeffat.ToList<Elokuva>();
+                else
+                {
+                    MessageBox.Show("Oletus listaa ei ole enää olemassa!", "Virhe", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                etsityt = movies.Movies;
+
+                paivitaDatagrid(movies.Movies);
+                this.SizeToContent = SizeToContent.WidthAndHeight;
             }
             else
             {
-                MessageBox.Show("Oletus listaa ei ole enää olemassa!", "Virhe", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            etsityt = movies.Movies;
+                Tyokalut.IsEnabled = false;
+                Menubaari.IsEnabled = false;
 
-            paivitaDatagrid(movies.Movies);
-            this.SizeToContent = SizeToContent.WidthAndHeight;
+                while (username == null)
+                {
+                    login = new Login();
+                    if (login.ShowDialog() == false)
+                    {
+                        if (login.userName != null)
+                        {
+                            username = login.userName;
+                            myIni();
+                        }
+                        else
+                        {
+                            Environment.Exit(1);
+                        }
+                    }
+                }
+            }
         }
         private void paivitaDatagrid(List<Elokuva> leffat)
         {

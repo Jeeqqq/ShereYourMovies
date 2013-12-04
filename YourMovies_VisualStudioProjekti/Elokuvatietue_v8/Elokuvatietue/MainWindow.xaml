@@ -21,7 +21,7 @@
 
         <DockPanel>
             <StackPanel DockPanel.Dock="Top">
-                <Menu Grid.Row="0" HorizontalAlignment="Stretch">
+                <Menu Name="Menubaari" Grid.Row="0" HorizontalAlignment="Stretch">
                     <MenuItem Header="Menu" x:Name="mnValikko">
                         <MenuItem Header="Asetukset" Click="MenuAsetukset_Click_1">
                             <MenuItem.ToolTip>
@@ -143,7 +143,7 @@
 
                 </DataGrid>
             </ScrollViewer>
-            <GroupBox Header="Työkalut" HorizontalAlignment="Left" Margin="10,10,0,0"  DockPanel.Dock="Left" VerticalAlignment="Top" Height="142" Width="150" Foreground="White">
+            <GroupBox Header="Työkalut" Name="Tyokalut" HorizontalAlignment="Left" Margin="10,10,0,0"  DockPanel.Dock="Left" VerticalAlignment="Top" Height="142" Width="150" Foreground="White">
                 <StackPanel>
                     <TextBox x:Name="txtEtsi" Height="23" Text="Etsi.."  TextWrapping="Wrap" KeyUp="txtEtsi_KeyUp" Width="100" HorizontalAlignment="Left"/>
                     <GroupBox Header="Filteröi katsotut" Foreground="White" Width="100" HorizontalAlignment="Left" Height="65">

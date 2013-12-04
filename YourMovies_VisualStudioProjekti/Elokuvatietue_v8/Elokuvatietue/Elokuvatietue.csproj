@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Elokuvatietue</RootNamespace>
-    <AssemblyName>Elokuvatietue</AssemblyName>
+    <AssemblyName>YourMovies</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -108,6 +108,9 @@
     <Compile Include="Ikkunat\ListaName.xaml.cs">
       <DependentUpon>ListaName.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Ikkunat\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Luokat\ElokuvaController.cs" />
     <Compile Include="Luokat\Rss.cs" />
     <Compile Include="Luokat\RssController.cs" />
@@ -129,6 +132,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Ikkunat\ListaName.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Ikkunat\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
