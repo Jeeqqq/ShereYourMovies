@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterSite/Site.Master" AutoEventWireup="true" CodeBehind="ListMovies.aspx.cs" Inherits="ShereYourMovies.ListMovies" %>
+﻿<%@ Page Title="Leffat" Language="C#" MasterPageFile="~/MasterSite/Site.Master" AutoEventWireup="true" CodeBehind="ListMovies.aspx.cs" Inherits="ShereYourMovies.ListMovies" %>
  
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
