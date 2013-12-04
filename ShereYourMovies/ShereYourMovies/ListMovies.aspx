@@ -1,13 +1,14 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterSite/Site.Master" AutoEventWireup="true" CodeBehind="ListMovies.aspx.cs" Inherits="ShereYourMovies.ListMovies" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+      
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="FeaturedContent" runat="server">
 
     <asp:Label runat="server" Text="Stalkkaa muita saatana:" ForeColor="LightGray" Font-Size="Large"></asp:Label>
     <asp:TextBox runat="server" ID="txtFindUsers"></asp:TextBox>
-    <asp:AutoCompleteExtender ID="txtFindUsers_AutoCompleteExtender" runat="server" 
+      <asp:AutoCompleteExtender ID="txtFindUsers_AutoCompleteExtender" runat="server" 
         DelimiterCharacters="" 
         Enabled="True" 
         ServicePath="" 

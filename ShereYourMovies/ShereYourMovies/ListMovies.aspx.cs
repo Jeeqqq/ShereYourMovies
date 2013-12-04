@@ -22,7 +22,6 @@ namespace ShereYourMovies
             set 
             {
                 _leffa = value;
-                Session["selectedMovie"] = value;
             } 
         }
         YourMovies db;
@@ -78,8 +77,8 @@ namespace ShereYourMovies
             IQueryable<Elokuva> elokuva = ElokuvaController.getMoviesByUsers(username, ref db);
 
             List<Elokuva> elokuvalista = elokuva.ToList();
-
-            
+            leffa = null;
+            Session["selectedMovie"] = leffa;
 
            // toGridView(elokuvalista);
             toListView(elokuvalista);
@@ -108,6 +107,7 @@ namespace ShereYourMovies
             int id =Int32.Parse(e.CommandArgument.ToString());
             List<Elokuva> elokuva=elokuvalista.FindAll(eKuva => eKuva.ElokuvaID == id);
             leffa = elokuva.ElementAt(0);
+            Session["selectedMovie"]=leffa;
             toListView2();
             ListView3.DataSource = null;
             ListView3.DataBind();
@@ -140,6 +140,7 @@ namespace ShereYourMovies
                     break;
                 case "Back":
                     leffa = null;
+                    Session["selectedMovie"] = leffa;
                     toListView(elokuvalista);
                     DataPagerMovies.Visible = true;
                     ListView2.DataSource = null;
