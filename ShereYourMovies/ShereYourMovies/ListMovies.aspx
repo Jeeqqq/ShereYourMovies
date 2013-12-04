@@ -43,7 +43,7 @@
                 
                   <table>
                    <tr>
-                        <td rowspan="8" ><asp:ImageButton runat="server" ID="Image1" BorderWidth="1" CommandArgument='<%#Eval("ELokuvaID") %>' OnCommand="openMovieInfo_Command"  CssClass="listImage" ImageUrl='<%#Eval("DbTiedot.Poster") %>' /></td>
+                        <td rowspan="10" ><asp:ImageButton runat="server" ID="Image1" BorderWidth="1" CommandArgument='<%#Eval("ElokuvaID") %>' OnCommand="openMovieInfo_Command"  CssClass="listImage" ImageUrl='<%#Eval("DbTiedot.Poster") %>' /></td>
                     </tr>
                     <tr>
                         <td></td>
@@ -79,6 +79,13 @@
                         <td></td>
                         <td>Julkaisuvuosi : </td>
                         <td><%#Eval("DbTiedot.Year") %></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Peukuta Elokuvaa</td>
+                        <td ><asp:ImageButton ToolTip="Peukuta Elokuvaa" runat="server" BorderWidth="0" CommandArgument='<%#Eval("ElokuvaID") %>' ID="ImageButton2" BackColor="Transparent"  OnCommand="ImageButton2_Command" Width="40px"  ImageUrl='~/Images/thumbs-up-icon.png' /></td>
+                    
+                        
                     </tr>
                           
                                        

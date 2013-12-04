@@ -35,7 +35,7 @@ namespace ShereYourMovies.Classes
                 // Feedin title tyypin mukaan
                 if (type.Equals("like"))
                 {
-                    r.Title = author + " tykkäsi elokuvasta " + movie + ".";
+                    r.Title = author + " peukutti elokuvaa " + movie + ".";
                 }
                 else if (type.Equals("watch"))
                 {

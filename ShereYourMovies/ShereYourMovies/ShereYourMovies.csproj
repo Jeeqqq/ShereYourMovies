@@ -228,6 +228,7 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\thumbs-up-icon.png" />
     <Content Include="ListMovies.aspx" />
     <Content Include="MovieInfo.aspx" />
     <Content Include="packages.config" />

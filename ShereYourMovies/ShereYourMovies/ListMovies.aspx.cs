@@ -328,7 +328,7 @@ namespace ShereYourMovies
                 toListView(elokuvalista);
             }
         }
-
+        //ei anneta muiden käyttäjien muokata muidien leffoja
         protected void ListView2_ItemDataBound(object sender, ListViewItemEventArgs e)
         {
             if (e.Item.ItemType == ListViewItemType.DataItem)
@@ -342,6 +342,15 @@ namespace ShereYourMovies
                     toolbaar.Visible = false ;
                 }
             }
+        }
+
+        protected void ImageButton2_Command(object sender, CommandEventArgs e)
+        {
+           
+            int id = Int32.Parse(e.CommandArgument.ToString());
+            List<Elokuva> elokuvat = elokuvalista.FindAll(eKuva => eKuva.ElokuvaID == id);
+            Elokuva elokuva = elokuvat.ElementAt(0);
+            RssController.AddFeedAndSave(Context.User.Identity.Name, elokuva.Nimi, "like", ref db);
         }
  
         
