@@ -65,7 +65,10 @@ namespace ShereYourMovies.Classes
                     }
                 }
                 if (!inList)
+                {
                     lista.Add(s);
+                    inList = false;
+                }
             }
             return lista;
         }

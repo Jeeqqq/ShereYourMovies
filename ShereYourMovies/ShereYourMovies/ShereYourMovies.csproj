@@ -263,7 +263,6 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Services\Authentication.svc" />
-    <Content Include="Services\AutoCompleteService.asmx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -376,10 +375,6 @@
     </Compile>
     <Compile Include="MasterSite\Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Services\AutoCompleteService.asmx.cs">
-      <DependentUpon>AutoCompleteService.asmx</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>

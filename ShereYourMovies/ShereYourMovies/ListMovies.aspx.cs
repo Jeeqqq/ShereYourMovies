@@ -13,6 +13,12 @@ using System.Data.SqlClient;
 
 namespace ShereYourMovies
 {
+    /*Listview1 listaa kaikki elokuvat
+     * listView2 listaa yhden valitun elokuvan
+     * ListVie3 listaa etsinnän tulokset
+     * 
+     * 
+     */
     public partial class ListMovies : System.Web.UI.Page
     {
         List<Elokuva> elokuvalista = new List<Elokuva>();
@@ -29,33 +35,6 @@ namespace ShereYourMovies
         }
         YourMovies db;
 
-        #region Sorting parameters
-        private string GridViewSortDirection
-        {
-            get { return ViewState["SortDirection"] as string ?? "ASC"; }
-            set { ViewState["SortDirection"] = value; }
-        }
-        private string GridViewSortExpression
-        {
-            get { return ViewState["SortExpression"] as string ?? string.Empty; }
-            set { ViewState["SortExpression"] = value; }
-        }
-        private string GetSortDirection()
-        {
-            switch (GridViewSortDirection)
-            {
-                case "ASC":
-                    GridViewSortDirection = "DESC";
-                    break;
-                case "DESC":
-                    GridViewSortDirection = "ASC";
-                    break;
-            }
-
-            return GridViewSortDirection;
-        }
-        #endregion
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
@@ -70,9 +49,14 @@ namespace ShereYourMovies
                 searchResults = (Result)Session["searchResults"];
                
             }
+            //haetaan kaikkien käyttäjien nimet
             usernames = ElokuvaController.getAllUsers(ref db);
+          
         }
-
+        /*
+         * initoitdaan muuuttuja ja tallenetaan ne sessioihin
+         * 
+         */
         private void myIni()
         {
 
@@ -86,12 +70,12 @@ namespace ShereYourMovies
             leffa = null;
             Session["selectedMovie"] = leffa;
 
-            lblInfo.Text = "Löytyi "+elokuvalista.Count+" elokuvaa.";
+            
             toListView(elokuvalista);
             Session["elokuvalista"] = elokuvalista;
             otsikko.InnerText = "Omat Elokuvat";
         }
-
+        #region databindaukset
         protected void bindSearchResult(Result r) 
         {      
             ListView3.DataSource = r.Movies;
@@ -108,6 +92,13 @@ namespace ShereYourMovies
             ListView2.DataBind();
             
         }
+        #endregion
+        #region lisview1 toiminnalisuudet
+        /*
+         * Yhden elokuvan valitseminen ja sen näyttäminen
+         * 
+         */
+        
         protected void openMovieInfo_Command(object sender, CommandEventArgs e)
         {
             int id =Int32.Parse(e.CommandArgument.ToString());
@@ -132,9 +123,12 @@ namespace ShereYourMovies
             toListView(elokuvalista);
         }
 
-
-
-
+        #endregion
+        #region listview2 toiminnalisuudet
+        /*
+         * Kaikki komennot kun vain yhtä ikkuunaa näytetaan
+         * 
+         */
         protected void ListView2_ItemCommand(object sender, ListViewCommandEventArgs e)
         {
             toListView2();
@@ -173,7 +167,10 @@ namespace ShereYourMovies
 
         protected void ListView2_ItemEditing(object sender, ListViewEditEventArgs e)
         {}
-
+        /*
+       * Yhden elokuvan päivittäminen
+       * 
+       */
         protected void ListView2_ItemUpdating(object sender, ListViewUpdateEventArgs e)
         {
             
@@ -259,8 +256,27 @@ namespace ShereYourMovies
             }
             ListView2.DataBind();
         }
+        //ei anneta muiden käyttäjien muokata muidien leffoja
+        protected void ListView2_ItemDataBound(object sender, ListViewItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListViewItemType.DataItem)
+            {
 
+                Panel toolbaar = (Panel)e.Item.FindControl("toolbarpanel");
+                toolbaar.Visible = true;
+                if (Context.User.Identity.Name != leffa.UserName)
+                {
 
+                    toolbaar.Visible = false;
+                }
+            }
+        }
+        #endregion
+        #region listview3 toiminnalisuudet
+        /*
+       * etsitään elokuvia internetistä
+       * 
+       */
         protected void btnSearch_Command(object sender, CommandEventArgs e)
         {
             TextBox txt = (TextBox)ListView3.FindControl("Search");
@@ -312,6 +328,12 @@ namespace ShereYourMovies
             if(searchResults != null)
             bindSearchResult(searchResults);
         }
+        #endregion
+        #region yleiset toiminnalisuudet
+        /*
+         * Etsitään toinen käyttäjä ja listataan käyttäjän elokuvat
+         * 
+         */
 
         protected void searchUser_Click(object sender, EventArgs e)
         {
@@ -327,24 +349,27 @@ namespace ShereYourMovies
                 elokuvalista = (ElokuvaController.getMoviesByUsers(username, ref db)).ToList();
                 Session["elokuvalista"] = elokuvalista;
                 toListView(elokuvalista);
+                Session["selectedMovie"] = null;
+                ListView2.DataBind();
+                ListView3.DataSource = null;
+                ListView3.DataBind();
             }
-        }
-        //ei anneta muiden käyttäjien muokata muidien leffoja
-        protected void ListView2_ItemDataBound(object sender, ListViewItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListViewItemType.DataItem)
+            else
             {
-                
-                Panel toolbaar = (Panel)e.Item.FindControl("toolbarpanel");
-                toolbaar.Visible = true;
-                if (Context.User.Identity.Name != leffa.UserName)
-                {
-
-                    toolbaar.Visible = false ;
-                }
+                otsikko.InnerText = "Käyttäjää " + username + " ei löytynyt tai käyttäjälle ei ole elokuvia";
+                Session["elokuvalista"] = null;
+                toListView(null);
+                Session["selectedMovie"]= null;
+                ListView2.DataBind();
+                ListView3.DataSource = null;
+                ListView3.DataBind();
             }
         }
-
+        
+        /*
+         * peukutetaan leffaaa
+         * 
+         */
         protected void ImageButton2_Command(object sender, CommandEventArgs e)
         {
            
@@ -353,9 +378,9 @@ namespace ShereYourMovies
             Elokuva elokuva = elokuvat.ElementAt(0);
             RssController.AddFeedAndSave(Context.User.Identity.Name, elokuva.Nimi, "like", ref db);
 
-            lblInfo.Text = "Tykkäsit käyttäjän "+Context.User.Identity.Name+" elokuvasta "+elokuva.Nimi;
+            lblInfo.Text = "Tykkäsit käyttäjän "+elokuva.UserName+" elokuvasta "+elokuva.Nimi;
         }
- 
-        
+
+        #endregion
     }
 }

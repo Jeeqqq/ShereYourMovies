@@ -1,18 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterSite/Site.Master" AutoEventWireup="true" CodeBehind="ListMovies.aspx.cs" Inherits="ShereYourMovies.ListMovies" %>
-<%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="asp" %>
-  
+ 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="FeaturedContent" runat="server">
     <asp:Label runat="server" Text="Etsi muiden käyttäjien elokuvia :" ForeColor="LightGray" Font-Size="Large"></asp:Label>
     <asp:TextBox runat="server" ID="txtFindUsers"></asp:TextBox>
-    <asp:AutoCompleteExtender ID="txtFindUsers_AutoCompleteExtender" runat="server" 
-        MinimumPrefixLength="2"
-        CompletionInterval="100" EnableCaching="true" CompletionSetCount="10" 
-        ServicePath="~/Services/AutoCompleteService.asmx"
-        ServiceMethod="GetCompletionList" 
-        TargetControlID="txtFindUsers" >
-    </asp:AutoCompleteExtender>
     <asp:Button runat="server" ID="searchUser" OnClick="searchUser_Click" Text="Hae"/>
     <asp:Label runat="server" ID="lblInfo" ForeColor="LightGray"></asp:Label>
 
