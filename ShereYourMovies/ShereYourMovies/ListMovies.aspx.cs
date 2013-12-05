@@ -69,7 +69,9 @@ namespace ShereYourMovies
             List<Elokuva> elokuvalista = elokuva.ToList();
             leffa = null;
             Session["selectedMovie"] = leffa;
-
+            ListView2.DataBind();
+            ListView3.DataSource = null;
+            ListView3.DataBind();
             
             toListView(elokuvalista);
             Session["elokuvalista"] = elokuvalista;
@@ -235,7 +237,6 @@ namespace ShereYourMovies
         {
             Elokuva leffaToDelete =(Elokuva)( from Elokuva in db.Elokuva where Elokuva.ElokuvaID == ElokuvaID select Elokuva).First();
             ElokuvaController.deleteElokuva(leffaToDelete, ref db);
-
             myIni();
         }
 
@@ -377,7 +378,8 @@ namespace ShereYourMovies
             List<Elokuva> elokuvat = elokuvalista.FindAll(eKuva => eKuva.ElokuvaID == id);
             Elokuva elokuva = elokuvat.ElementAt(0);
             RssController.AddFeedAndSave(Context.User.Identity.Name, elokuva.Nimi, "like", ref db);
-
+            Session["selectedMovie"] = null;
+            ListView2.DataBind();
             lblInfo.Text = "Tykkäsit käyttäjän "+elokuva.UserName+" elokuvasta "+elokuva.Nimi;
         }
 
